@@ -122,9 +122,17 @@ textarea { resize: none; line-height: 1.65; }
 .suc-ey::before,.suc-ey::after { content:''; width:16px; height:1px; background:rgba(255,255,255,0.15); }
 .suc-title { font-family: 'Unbounded', sans-serif; font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #fff 0%, #a3a3a3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
 .suc-sub { font-size: 13px; color: var(--text-dim); line-height: 1.65; max-width: 260px; margin-bottom: 36px; }
+/* Toast уведомления */
+#toast-wrap { position: fixed; top: 70px; left: 0; right: 0; z-index: 3000; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+.toast { background: rgba(20,20,20,0.96); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px 18px; font-size: 13px; font-weight: 500; color: var(--text); max-width: 300px; text-align: center; pointer-events: none; animation: toast-in .22s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+.toast.err { border-color: rgba(255,80,80,0.25); color: #ff8080; }
+.toast.ok  { border-color: rgba(80,255,160,0.2); color: #80ffb0; }
+@keyframes toast-in { from { opacity:0; transform:translateY(-10px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes toast-out { from { opacity:1; } to { opacity:0; transform:translateY(-6px); } }
 </style>
 </head>
 <body>
+<div id="toast-wrap"></div>
 <canvas id="pc"></canvas>
 <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
@@ -217,6 +225,19 @@ textarea { resize: none; line-height: 1.65; }
 </div>
 
 <script>
+// ── Toast уведомления ─────────────────────────────────────────
+function toast(msg, type='err', ms=3000) {
+  const wrap = document.getElementById('toast-wrap');
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(() => {
+    el.style.animation = 'toast-out .22s ease forwards';
+    setTimeout(() => el.remove(), 220);
+  }, ms);
+}
+
 // ── Telegram WebApp init ───────────────────────────────────────
 const tg = (typeof Telegram !== 'undefined' && Telegram.WebApp) ? Telegram.WebApp : {
   expand: () => {}, ready: () => {}, initDataUnsafe: { user: { id: 0 } }, showAlert: m => alert(m), close: () => {}
@@ -321,22 +342,22 @@ function buildP(type) {
 
 // ── Отправка ──────────────────────────────────────────────────
 function send(type) {
-  const err = validate(type); if(err){ alert(err); return; }
+  const err = validate(type); if(err){ toast(err); return; }
   const bk = type==='find-exec'?'exec':type==='find-job'?'job':type==='find-team'?'team':'guide';
   const boost = S.boosts[bk];
   if(boost==='bump'||boost==='pin'){ const stars=boost==='bump'?25:75; if(!confirm(`Оплатить ${stars} Stars?`)) return; }
   doFetch(buildP(type), type);
 }
 function sendSup() {
-  const txt = document.getElementById('s-txt')?.value.trim(); if(!txt){ alert('Опишите проблему'); return; }
+  const txt = document.getElementById('s-txt')?.value.trim(); if(!txt){ toast('Опишите проблему'); return; }
   doFetch({ user_id: tg.initDataUnsafe?.user?.id||0, type:'support_request', text:txt }, 'support');
 }
 function doFetch(data, type) {
   document.querySelectorAll('.btn').forEach(b=>b.disabled=true);
   fetch(API_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) })
     .then(r=>r.json())
-    .then(res=>{ document.querySelectorAll('.btn').forEach(b=>b.disabled=false); if(res.status==='limit') alert(res.message||'Лимит. Попробуйте позже.'); else showSuc(type); })
-    .catch(e=>{ document.querySelectorAll('.btn').forEach(b=>b.disabled=false); alert('Ошибка: '+e.message); });
+    .then(res=>{ document.querySelectorAll('.btn').forEach(b=>b.disabled=false); if(res.status==='limit') toast(res.message||'Лимит. Попробуйте позже.'); else showSuc(type); })
+    .catch(e=>{ document.querySelectorAll('.btn').forEach(b=>b.disabled=false); toast('Ошибка: '+e.message); });
 }
 
 // ── Экран успеха ──────────────────────────────────────────────
