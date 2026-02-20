@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Roblox Community</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #0a0a0a; --glass: linear-gradient(135deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.015) 100%);
+  --glass-border: rgba(255,255,255,0.08); --glass-border-h: rgba(255,255,255,0.14);
+  --text: #e5e5e5; --text-mid: rgba(229,229,229,0.55); --text-dim: rgba(229,229,229,0.3);
+  --r: 20px; --r-sm: 12px;
+}
+html, body { background: var(--bg); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 15px; line-height: 1.5; min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: 0.032; }
+.orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(90px); opacity: 0.13; }
+.orb-1 { width: 380px; height: 380px; background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%); top: -80px; left: -60px; animation: f1 22s ease-in-out infinite; }
+.orb-2 { width: 460px; height: 460px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); bottom: -120px; right: -80px; animation: f2 28s ease-in-out infinite; }
+.orb-3 { width: 280px; height: 280px; background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%); top: 45%; left: 35%; animation: f3 18s ease-in-out infinite; }
+@keyframes f1 { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(40px,-60px) scale(1.08)} 70%{transform:translate(-20px,35px) scale(0.93)} }
+@keyframes f2 { 0%,100%{transform:translate(0,0) scale(1)} 35%{transform:translate(-55px,30px) scale(1.12)} 70%{transform:translate(30px,-45px) scale(0.96)} }
+@keyframes f3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(50px,55px) scale(1.06)} }
+#pc { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+.overlay { position: fixed; inset: 0; z-index: 900; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); display: none; }
+.sidebar { position: fixed; top: 0; left: -290px; width: 270px; height: 100%; z-index: 999; background: rgba(10,10,10,0.92); backdrop-filter: blur(30px) saturate(150%); border-right: 1px solid var(--glass-border); padding: 28px 18px 24px; display: flex; flex-direction: column; gap: 3px; transition: left .28s cubic-bezier(.4,0,.2,1); }
+.sidebar.open { left: 0; }
+.sb-brand { font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,0.9); margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--glass-border); }
+.sb-item { padding: 12px 14px; border-radius: 14px; font-size: 13px; font-weight: 500; color: var(--text-mid); cursor: pointer; transition: background .14s, color .14s; }
+.sb-item:active { background: rgba(255,255,255,0.05); color: var(--text); }
+.sb-ver { margin-top: auto; font-size: 10px; color: var(--text-dim); font-family: monospace; letter-spacing: .06em; }
+.header { position: sticky; top: 0; z-index: 100; height: 54px; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: rgba(10,10,10,0.88); border-bottom: 1px solid var(--glass-border); backdrop-filter: blur(20px); }
+.burger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; flex-shrink: 0; padding: 4px; }
+.burger span { display: block; height: 1.5px; border-radius: 2px; background: var(--text-mid); transition: .2s; }
+.burger span:nth-child(1){width:18px} .burger span:nth-child(2){width:13px} .burger span:nth-child(3){width:16px}
+.h-name { font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,0.85); flex: 1; }
+.h-badge { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,0.4); border: 1px solid var(--glass-border); padding: 3px 10px; border-radius: 20px; }
+.nav { display: flex; padding: 0 16px; border-bottom: 1px solid var(--glass-border); background: rgba(10,10,10,0.6); overflow-x: auto; scrollbar-width: none; position: relative; z-index: 2; }
+.nav::-webkit-scrollbar { display: none; }
+.nav-item { flex-shrink: 0; padding: 14px 0; margin-right: 22px; font-size: 11px; font-weight: 700; letter-spacing: .05em; color: var(--text-dim); cursor: pointer; white-space: nowrap; border-bottom: 1.5px solid transparent; transition: color .18s, border-color .18s; }
+.nav-item.active { color: var(--text); border-color: rgba(255,255,255,0.6); }
+.content { padding: 0 16px 130px; position: relative; z-index: 2; }
+.page { display: none; }
+.page.active { display: block; animation: fadeup .25s ease; }
+@keyframes fadeup { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.pg-head { padding: 28px 0 20px; border-bottom: 1px solid var(--glass-border); margin-bottom: 24px; }
+.pg-eyebrow { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .24em; color: var(--text-dim); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.pg-eyebrow::before { content: ''; display: block; width: 16px; height: 1px; background: rgba(255,255,255,0.2); }
+.pg-title { font-family: 'Unbounded', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -.025em; background: linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.15; }
+.pg-sub { margin-top: 6px; font-size: 12px; color: var(--text-dim); font-weight: 400; }
+.field { margin-bottom: 22px; }
+.f-label { display: block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .2em; color: var(--text-dim); margin-bottom: 10px; }
+input[type=text], input[type=url], textarea, select { width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: var(--r-sm); padding: 13px 15px; color: var(--text); font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 400; outline: none; appearance: none; -webkit-appearance: none; transition: border-color .18s, box-shadow .18s; }
+input::placeholder, textarea::placeholder { color: var(--text-dim); }
+input:focus, textarea:focus, select:focus { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 0 3px rgba(255,255,255,0.04); }
+textarea { resize: none; line-height: 1.65; }
+.sel-w { position: relative; }
+.sel-w::after { content: '↓'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-dim); pointer-events: none; font-size: 13px; }
+.price-row { display: flex; gap: 8px; }
+.price-row input { flex: 2.2; }
+.price-row .sel-w { flex: 1; }
+.chips, .cat-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip, .cat-chip { padding: 7px 13px; border-radius: 999px; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid var(--glass-border); font-size: 11px; font-weight: 600; color: var(--text-mid); cursor: pointer; transition: all .16s; user-select: none; }
+.chip.active, .cat-chip.active { background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%); border-color: rgba(255,255,255,0.22); color: #fff; box-shadow: inset 0 1px 1px rgba(255,255,255,0.08); }
+.chip:active, .cat-chip:active { transform: scale(.94); }
+.char-hint { text-align: right; font-size: 9px; color: var(--text-dim); margin-top: 5px; font-family: monospace; }
+.note { border-left: 1px solid rgba(255,255,255,0.15); padding: 10px 13px; border-radius: 0 10px 10px 0; background: rgba(255,255,255,0.03); font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-bottom: 20px; }
+.preview { display: none; background: var(--glass); backdrop-filter: blur(26px); border: 1px solid var(--glass-border); border-radius: var(--r); padding: 16px 17px; margin-bottom: 20px; }
+.preview.show { display: block; animation: fadeup .22s ease; }
+.preview-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .2em; color: var(--text-dim); display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+.preview-lbl::before { content: ''; width: 12px; height: 1px; background: rgba(255,255,255,0.2); }
+.preview-body { font-size: 12px; line-height: 1.75; color: var(--text-mid); white-space: pre-wrap; word-break: break-word; }
+.preview-tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+.ptag { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); padding: 3px 9px; border-radius: 20px; font-family: monospace; }
+.boost { display: none; margin-bottom: 22px; }
+.boost.show { display: block; animation: fadeup .22s ease; }
+.boost-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.boost-ttl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .2em; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+.boost-ttl::before { content: ''; width: 12px; height: 1px; background: rgba(255,255,255,0.2); }
+.boost-sub { font-size: 9px; color: var(--text-dim); font-family: monospace; }
+.boost-opt { display: flex; align-items: center; justify-content: space-between; padding: 13px 15px; margin-bottom: 6px; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid var(--glass-border); border-radius: var(--r-sm); cursor: pointer; transition: border-color .16s, background .16s; backdrop-filter: blur(16px); }
+.boost-opt.active { border-color: rgba(255,255,255,0.2); background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%); }
+.boost-opt:active { transform: scale(.98); }
+.bo-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.bo-desc { font-size: 11px; color: var(--text-dim); }
+.bo-price { font-size: 10px; font-weight: 700; font-family: monospace; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border); padding: 4px 11px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.bo-price.free { color: var(--text-dim); background: transparent; border-color: rgba(255,255,255,0.06); }
+.btn { width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.16); border-radius: var(--r); color: #fff; font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; transition: background .18s, border-color .18s, transform .1s; box-shadow: inset 0 1px 1px rgba(255,255,255,0.08), 0 8px 24px rgba(0,0,0,0.4); margin-top: 4px; }
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn.outline { background: transparent; border-color: rgba(255,255,255,0.1); color: var(--text-mid); box-shadow: none; }
+.suc { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; }
+.suc.show { display: flex; animation: fadeup .32s ease; }
+.suc-ring { width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; font-size: 22px; color: rgba(255,255,255,0.8); margin-bottom: 26px; }
+.suc-ey { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .26em; color: var(--text-dim); display: flex; align-items: center; gap: 6px; justify-content: center; margin-bottom: 10px; }
+.suc-ey::before,.suc-ey::after { content:''; width:16px; height:1px; background:rgba(255,255,255,0.15); }
+.suc-title { font-family: 'Unbounded', sans-serif; font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #fff 0%, #a3a3a3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
+.suc-sub { font-size: 13px; color: var(--text-dim); line-height: 1.65; max-width: 260px; margin-bottom: 36px; }
+</style>
+</head>
+<body>
+<canvas id="pc"></canvas>
+<div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sb-brand">Roblox Studio</div>
+  <div class="sb-item" onclick="goNav('support'); toggleMenu()">Поддержка</div>
+  <div class="sb-item" onclick="toggleMenu()">Мои посты</div>
+  <div class="sb-item" onclick="typeof tg!='undefined'&&tg.close?tg.close():null">Закрыть</div>
+  <div class="sb-ver">v3.0 · Stable</div>
+</div>
+<div class="header">
+  <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  <div class="h-name">Roblox Studio</div>
+  <div class="h-badge">Community</div>
+</div>
+<div class="nav">
+  <div class="nav-item active" onclick="goNav('find-exec',this)">Исполнитель</div>
+  <div class="nav-item" onclick="goNav('find-job',this)">Работа</div>
+  <div class="nav-item" onclick="goNav('find-team',this)">Команда</div>
+  <div class="nav-item" onclick="goNav('guides',this)">Гайды</div>
+</div>
+<div class="content">
+
+<div id="page-find-exec" class="page active">
+  <div class="pg-head"><div class="pg-eyebrow">Раздел — Фриланс</div><div class="pg-title">Ищу<br>исполнителя</div><div class="pg-sub">Опубликуем после модерации</div></div>
+  <div class="field"><span class="f-label">Специализации</span><div class="chips" id="exec-specs"></div></div>
+  <div class="field"><span class="f-label">Описание задачи</span><textarea id="exec-desc" rows="5" maxlength="1000" placeholder="Что нужно сделать, сроки, детали..." oninput="c(this,'ec');bp()"></textarea><div class="char-hint"><span id="ec">0</span> / 1000</div></div>
+  <div class="field"><span class="f-label">Оплата</span><div class="price-row"><input type="text" id="exec-price" placeholder="Сумма или «договорная»" oninput="bp()"><div class="sel-w"><select id="exec-curr" onchange="ct('exec');bp()"><option>RUB</option><option>USD</option><option>Robux</option><option>KZT</option><option>Crypto</option></select></div></div><div id="exec-cw" style="display:none;margin-top:8px"><input type="text" id="exec-cn" placeholder="TON, USDT, BTC…" oninput="bp()"></div></div>
+  <div class="field"><span class="f-label">Контакт</span><input type="text" id="exec-contact" placeholder="@username или ссылка" oninput="bp()"></div>
+  <div class="preview" id="exec-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="exec-pb"></div><div class="preview-tags" id="exec-pt"></div></div>
+  <div class="boost" id="exec-boost"><div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div><div class="boost-opt" onclick="pb2(this,'exec','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div><div class="boost-opt" onclick="pb2(this,'exec','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div><div class="boost-opt active" onclick="pb2(this,'exec','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div></div>
+  <button class="btn" onclick="send('find-exec')">Отправить на модерацию</button>
+</div>
+
+<div id="page-find-job" class="page">
+  <div class="pg-head"><div class="pg-eyebrow">Раздел — Исполнители</div><div class="pg-title">Ищу<br>работу</div><div class="pg-sub">Заказчики найдут вас после публикации</div></div>
+  <div class="field"><span class="f-label">Специализации</span><div class="chips" id="job-specs"></div></div>
+  <div class="field"><span class="f-label">О себе и опыте</span><textarea id="job-exp" rows="5" maxlength="1000" placeholder="Опыт, проекты, навыки…" oninput="c(this,'jc');bp()"></textarea><div class="char-hint"><span id="jc">0</span> / 1000</div></div>
+  <div class="field"><span class="f-label">Ставка</span><div class="price-row"><input type="text" id="job-price" placeholder="От … или фиксированно" oninput="bp()"><div class="sel-w"><select id="job-curr" onchange="ct('job');bp()"><option>RUB</option><option>USD</option><option>Robux</option><option>KZT</option><option>Crypto</option></select></div></div><div id="job-cw" style="display:none;margin-top:8px"><input type="text" id="job-cn" placeholder="TON, USDT, BTC…" oninput="bp()"></div></div>
+  <div class="field"><span class="f-label">Портфолио</span><input type="url" id="job-port" placeholder="https://…" oninput="bp()"></div>
+  <div class="field"><span class="f-label">Контакт</span><input type="text" id="job-contact" placeholder="@username" oninput="bp()"></div>
+  <div class="preview" id="job-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="job-pb"></div><div class="preview-tags" id="job-pt"></div></div>
+  <div class="boost" id="job-boost"><div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div><div class="boost-opt" onclick="pb2(this,'job','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div><div class="boost-opt" onclick="pb2(this,'job','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div><div class="boost-opt active" onclick="pb2(this,'job','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div></div>
+  <button class="btn" onclick="send('find-job')">Отправить на модерацию</button>
+</div>
+
+<div id="page-find-team" class="page">
+  <div class="pg-head"><div class="pg-eyebrow">Раздел — Команды</div><div class="pg-title">Ищу<br>команду</div><div class="pg-sub">Найдите партнёров для проекта</div></div>
+  <div class="field"><span class="f-label">Кто вы в проекте</span><div class="chips" id="team-role"></div></div>
+  <div class="field"><span class="f-label">Ищем специалистов</span><div class="chips" id="team-need"></div></div>
+  <div class="field"><span class="f-label">Описание проекта</span><textarea id="team-desc" rows="6" maxlength="1200" placeholder="Идея, механика, цели…" oninput="c(this,'tc');bp()"></textarea><div class="char-hint"><span id="tc">0</span> / 1200</div></div>
+  <div class="field"><span class="f-label">Условия</span><div class="sel-w"><select id="team-pay" onchange="bp()"><option value="">Выберите формат</option><option>Роялти — % от прибыли</option><option>Фиксированная оплата</option><option>Для портфолио / бесплатно</option><option>Обсуждается</option></select></div></div>
+  <div class="field"><span class="f-label">Контакт</span><input type="text" id="team-contact" placeholder="@username" oninput="bp()"></div>
+  <div class="preview" id="team-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="team-pb"></div><div class="preview-tags" id="team-pt"></div></div>
+  <div class="boost" id="team-boost"><div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div><div class="boost-opt" onclick="pb2(this,'team','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div><div class="boost-opt" onclick="pb2(this,'team','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div><div class="boost-opt active" onclick="pb2(this,'team','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div></div>
+  <button class="btn" onclick="send('find-team')">Отправить на модерацию</button>
+</div>
+
+<div id="page-guides" class="page">
+  <div class="pg-head"><div class="pg-eyebrow">Раздел — База знаний</div><div class="pg-title">Написать<br>гайд</div><div class="pg-sub">После проверки появится в канале</div></div>
+  <div class="field"><span class="f-label">Заголовок</span><input type="text" id="g-title" maxlength="80" placeholder="Как создать…" oninput="c(this,'gt');bp()"><div class="char-hint"><span id="gt">0</span> / 80</div></div>
+  <div class="field"><span class="f-label">Категория</span><div class="cat-chips" id="guide-cats"></div></div>
+  <div class="field"><span class="f-label">Уровень</span><div class="sel-w"><select id="g-level"><option>Новичок</option><option>Средний</option><option>Продвинутый</option></select></div></div>
+  <div class="field"><span class="f-label">Текст гайда</span><textarea id="g-content" rows="11" maxlength="3000" placeholder="Шаги, объяснения, примеры…" oninput="c(this,'gc');bp()"></textarea><div class="char-hint"><span id="gc">0</span> / 3000</div></div>
+  <div class="preview" id="guide-preview"><div class="preview-lbl">Превью гайда</div><div class="preview-body" id="guide-pb"></div><div class="preview-tags" id="guide-pt"></div></div>
+  <div class="boost" id="guide-boost"><div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div><div class="boost-opt" onclick="pb2(this,'guide','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div><div class="boost-opt" onclick="pb2(this,'guide','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Гайд остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div><div class="boost-opt active" onclick="pb2(this,'guide','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div></div>
+  <button class="btn" onclick="send('guides')">Отправить на модерацию</button>
+</div>
+
+<div id="page-support" class="page">
+  <div class="pg-head"><div class="pg-eyebrow">Служебный раздел</div><div class="pg-title">Поддержка</div></div>
+  <div class="note">Ответим в чате бота. Повторный запрос — не раньше чем через 2 часа.</div>
+  <div class="field"><span class="f-label">Опишите проблему</span><textarea id="s-txt" rows="9" maxlength="1000" placeholder="Что случилось?" oninput="c(this,'sc')"></textarea><div class="char-hint"><span id="sc">0</span> / 1000</div></div>
+  <button class="btn outline" onclick="sendSup()">Отправить запрос</button>
+</div>
+
+</div>
+
+<div class="suc" id="suc">
+  <div class="suc-ey" id="suc-lbl">Готово</div>
+  <div class="suc-ring" id="suc-icon">✓</div>
+  <div class="suc-title" id="suc-title">Отправлено</div>
+  <div class="suc-sub" id="suc-sub">Ваш пост отправлен на модерацию.</div>
+  <button class="btn" onclick="closeSuc()" style="max-width:180px;margin:0 auto">Закрыть</button>
+</div>
+
+<script>
+const tg=(typeof Telegram!='undefined'&&Telegram.WebApp)?Telegram.WebApp:{expand:()=>{},initDataUnsafe:{user:{id:0}},showAlert:m=>alert(m)};
+try{tg.expand();}catch(e){}
+
+// API на том же сервере что и этот файл
+const API_URL="http://e2.aurorix.net:25156/api/submit";
+
+const SPECS=['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Тестер'];
+const ROLES=['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Менеджер'];
+const GCATS=['Скриптинг','Билдинг','Интерфейсы','VFX','Анимация','Оптимизация','Другое'];
+
+const S={execSpecs:[],jobSpecs:[],teamRole:[],teamNeed:[],guideCat:null,boosts:{exec:'none',job:'none',team:'none',guide:'none'}};
+let cur='find-exec';
+
+function mkC(id,arr,key,cb){const el=document.getElementById(id);if(!el)return;arr.forEach(s=>{const d=document.createElement('div');d.className='chip';d.textContent=s;d.onclick=()=>{const i=S[key].indexOf(s);i>-1?(S[key].splice(i,1),d.classList.remove('active')):(S[key].push(s),d.classList.add('active'));cb&&cb();};el.appendChild(d);});}
+function mkCC(id,arr,cb){const el=document.getElementById(id);if(!el)return;arr.forEach(s=>{const d=document.createElement('div');d.className='cat-chip';d.textContent=s;d.onclick=()=>{el.querySelectorAll('.cat-chip').forEach(x=>x.classList.remove('active'));d.classList.add('active');S.guideCat=s;cb&&cb();};el.appendChild(d);});}
+mkC('exec-specs',SPECS,'execSpecs',()=>{bp();sb('exec');});
+mkC('job-specs',SPECS,'jobSpecs',()=>{bp();sb('job');});
+mkC('team-role',ROLES,'teamRole',()=>bp());
+mkC('team-need',SPECS,'teamNeed',()=>{bp();sb('team');});
+mkCC('guide-cats',GCATS,()=>{bp();sb('guide');});
+
+function goNav(id,el){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const pg=document.getElementById('page-'+id);if(pg)pg.classList.add('active');if(el)el.classList.add('active');cur=id;bp();}
+function toggleMenu(){const s=document.getElementById('sidebar'),o=document.getElementById('overlay');const op=s.classList.toggle('open');o.style.display=op?'block':'none';}
+function sb(sec){const el=document.getElementById(sec+'-boost');if(el)el.classList.add('show');}
+function pb2(el,sec,type){el.closest('.boost').querySelectorAll('.boost-opt').forEach(x=>x.classList.remove('active'));el.classList.add('active');S.boosts[sec]=type;}
+function ct(p){const cu=document.getElementById(p+'-curr'),w=document.getElementById(p+'-cw');if(cu&&w)w.style.display=cu.value==='Crypto'?'block':'none';}
+function c(el,id){const x=document.getElementById(id);if(x)x.textContent=el.value.length;}
+function v(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function tag(s){return '#'+s.toLowerCase().replace(/[^a-zа-яёЁ0-9]/gi,'');}
+
+function setp(id,body,tags){const card=document.getElementById(id+'-preview'),pb=document.getElementById(id+'-pb'),pt=document.getElementById(id+'-pt');if(!card||!pb)return;if(!body.trim()){card.classList.remove('show');return;}pb.textContent=body.trim();if(pt)pt.innerHTML=tags.map(t=>`<span class="ptag">${t}</span>`).join('');card.classList.add('show');}
+
+function bp(){
+  if(cur==='find-exec'){const sp=S.execSpecs,desc=v('exec-desc'),price=v('exec-price'),curr=v('exec-curr'),con=v('exec-contact');if(!sp.length&&!desc){document.getElementById('exec-preview').classList.remove('show');return;}let t='ИЩЕМ ИСПОЛНИТЕЛЯ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(desc)t+='\n\n'+desc;if(price)t+='\n\nОплата: '+price+' '+(curr==='Crypto'?(v('exec-cn')||'Crypto'):curr);if(con)t+='\nКонтакт: '+con;setp('exec',t,['#ищу_исполнителя','#фриланс_roblox',...sp.map(tag)]);sb('exec');}
+  else if(cur==='find-job'){const sp=S.jobSpecs,exp=v('job-exp'),price=v('job-price'),curr=v('job-curr'),port=v('job-port'),con=v('job-contact');if(!sp.length&&!exp){document.getElementById('job-preview').classList.remove('show');return;}let t='ИЩУ РАБОТУ / ЗАКАЗЫ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(exp)t+='\n\n'+exp;if(price)t+='\n\nСтавка: от '+price+' '+(curr==='Crypto'?(v('job-cn')||'Crypto'):curr);if(port)t+='\nПортфолио: '+port;if(con)t+='\nКонтакт: '+con;setp('job',t,['#ищу_работу','#фриланс_roblox',...sp.map(tag)]);sb('job');}
+  else if(cur==='find-team'){const roles=S.teamRole,need=S.teamNeed,desc=v('team-desc'),pay=v('team-pay'),con=v('team-contact');if(!roles.length&&!desc){document.getElementById('team-preview').classList.remove('show');return;}let t='ИЩЕМ КОМАНДУ\n';if(roles.length)t+='\nЯ: '+roles.join(', ');if(need.length)t+='\nИщем: '+need.join(', ');if(desc)t+='\n\n'+desc;if(pay)t+='\n\nУсловия: '+pay;if(con)t+='\nКонтакт: '+con;setp('team',t,['#ищу_команду','#roblox_team',...need.map(tag)]);sb('team');}
+  else if(cur==='guides'){const title=v('g-title'),content=v('g-content'),cat=S.guideCat,level=v('g-level');if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}let t='ГАЙД\n';if(title)t+='\n'+title;if(cat)t+='\nКатегория: '+cat;if(level)t+='\nУровень: '+level;if(content)t+='\n\n'+content.substring(0,300)+(content.length>300?'...':'');setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));sb('guide');}
+}
+
+function validate(type){
+  if(type==='find-exec'){if(!S.execSpecs.length&&!v('exec-desc'))return'Выберите специализации или опишите задачу';if(!v('exec-contact'))return'Укажите контакт';}
+  if(type==='find-job'){if(!S.jobSpecs.length&&!v('job-exp'))return'Выберите специализации или расскажите о себе';if(!v('job-contact'))return'Укажите контакт';}
+  if(type==='find-team'){if(!v('team-desc'))return'Опишите проект';if(!v('team-contact'))return'Укажите контакт';}
+  if(type==='guides'){if(!v('g-title'))return'Введите заголовок';if(!S.guideCat)return'Выберите категорию';if(!v('g-content'))return'Напишите текст гайда';}
+  return null;
+}
+function buildP(type){
+  const uid=tg.initDataUnsafe?.user?.id||0;
+  const bk=type==='find-exec'?'exec':type==='find-job'?'job':type==='find-team'?'team':'guide';
+  const p={user_id:uid,type,boost:S.boosts[bk]};
+  if(type==='find-exec'){p.specs=S.execSpecs;p.description=v('exec-desc');p.price=v('exec-price');p.currency=v('exec-curr');if(p.currency==='Crypto')p.crypto_name=v('exec-cn');p.contact=v('exec-contact');p.hashtags=['#ищу_исполнителя','#фриланс_roblox',...S.execSpecs.map(tag)];}
+  else if(type==='find-job'){p.specs=S.jobSpecs;p.experience=v('job-exp');p.price=v('job-price');p.currency=v('job-curr');if(p.currency==='Crypto')p.crypto_name=v('job-cn');p.portfolio=v('job-port');p.contact=v('job-contact');p.hashtags=['#ищу_работу','#фриланс_roblox',...S.jobSpecs.map(tag)];}
+  else if(type==='find-team'){p.my_role=S.teamRole;p.need=S.teamNeed;p.description=v('team-desc');p.payment=v('team-pay');p.contact=v('team-contact');p.hashtags=['#ищу_команду','#roblox_team',...S.teamNeed.map(tag)];}
+  else if(type==='guides'){p.title=v('g-title');p.category=S.guideCat;p.level=v('g-level');p.content=v('g-content');p.hashtags=['#гайд_roblox',...(S.guideCat?[tag(S.guideCat)]:[])].filter(Boolean);}
+  return p;
+}
+function send(type){const err=validate(type);if(err){alert(err);return;}const bk=type==='find-exec'?'exec':type==='find-job'?'job':type==='find-team'?'team':'guide';const boost=S.boosts[bk];if(boost==='bump'||boost==='pin'){const stars=boost==='bump'?25:75;if(!confirm(`Оплатить ${stars} Stars?`))return;}doFetch(buildP(type),type);}
+function sendSup(){const txt=document.getElementById('s-txt')?.value.trim();if(!txt){alert('Опишите проблему');return;}doFetch({user_id:tg.initDataUnsafe?.user?.id||0,type:'support_request',text:txt},'support');}
+function doFetch(data,type){
+  document.querySelectorAll('.btn').forEach(b=>b.disabled=true);
+  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+  .then(r=>r.json())
+  .then(res=>{document.querySelectorAll('.btn').forEach(b=>b.disabled=false);if(res.status==='limit')alert(res.message||'Лимит. Попробуйте позже.');else showSuc(type);})
+  .catch(e=>{document.querySelectorAll('.btn').forEach(b=>b.disabled=false);alert('Ошибка соединения: '+e.message);});
+}
+
+const SD={'find-exec':{lbl:'Объявление создано',icon:'✓',title:'Отправлено',sub:'После проверки пост появится в канале.'},'find-job':{lbl:'Анкета создана',icon:'✓',title:'Отправлено',sub:'Заказчики найдут вас после публикации.'},'find-team':{lbl:'Объявление создано',icon:'✓',title:'Отправлено',sub:'Скоро найдёте команду.'},'guides':{lbl:'Гайд отправлен',icon:'✓',title:'На модерации',sub:'После проверки гайд появится в канале.'},'support':{lbl:'Запрос принят',icon:'→',title:'Ответим в боте',sub:'Обычно в течение нескольких часов.'}};
+function showSuc(type){const d=SD[type]||SD['find-exec'];document.getElementById('suc-lbl').textContent=d.lbl;document.getElementById('suc-icon').textContent=d.icon;document.getElementById('suc-title').textContent=d.title;document.getElementById('suc-sub').textContent=d.sub;document.getElementById('suc').classList.add('show');}
+function closeSuc(){document.getElementById('suc').classList.remove('show');}
+
+const canvas=document.getElementById('pc');const ctx=canvas.getContext('2d');
+function rs(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}rs();window.addEventListener('resize',rs);
+class P{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.s=Math.random()*1.6+0.4;this.vx=Math.random()*.45-.22;this.vy=Math.random()*.45-.22;this.o=Math.random()*.45+0.15;}update(){this.x+=this.vx;this.y+=this.vy;if(this.x>canvas.width)this.x=0;if(this.x<0)this.x=canvas.width;if(this.y>canvas.height)this.y=0;if(this.y<0)this.y=canvas.height;}draw(){ctx.fillStyle=`rgba(255,255,255,${this.o})`;ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fill();}}
+const pts=[];for(let i=0;i<60;i++)pts.push(new P());
+function anim(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{p.update();p.draw();});pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.strokeStyle=`rgba(255,255,255,${.08*(1-d/100)})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}));requestAnimationFrame(anim);}
+anim();
+</script>
+</body>
+</html>
