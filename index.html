@@ -264,6 +264,55 @@ class P{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*can
 const pts=[];for(let i=0;i<60;i++)pts.push(new P());
 function anim(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{p.update();p.draw();});pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.strokeStyle=`rgba(255,255,255,${.08*(1-d/100)})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}));requestAnimationFrame(anim);}
 anim();
+  function send(page) {
+    let payload = {};
+    if(page==='find-exec') {
+        payload = {
+            username: tg.initDataUnsafe.user?.id || "Guest",
+            service: S.execSpecs.join(', '),
+            budget: document.getElementById('exec-price').value + " " + document.getElementById('exec-curr').value,
+            description: document.getElementById('exec-desc').value,
+            contact: document.getElementById('exec-contact').value
+        };
+    } else if(page==='find-job') {
+        payload = {
+            username: tg.initDataUnsafe.user?.id || "Guest",
+            service: S.jobSpecs.join(', '),
+            budget: document.getElementById('job-price').value + " " + document.getElementById('job-curr').value,
+            description: document.getElementById('job-exp').value,
+            contact: document.getElementById('job-contact').value
+        };
+    } else if(page==='find-team') {
+        payload = {
+            username: tg.initDataUnsafe.user?.id || "Guest",
+            service: S.teamNeed.join(', '),
+            budget: document.getElementById('team-pay').value,
+            description: document.getElementById('team-desc').value,
+            contact: document.getElementById('team-contact').value
+        };
+    } else if(page==='guides') {
+        payload = {
+            username: tg.initDataUnsafe.user?.id || "Guest",
+            service: document.getElementById('g-level').value,
+            budget: "—",
+            description: document.getElementById('g-content').value,
+            contact: document.getElementById('g-title').value
+        };
+    }
+
+    fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.text())
+    .then(() => {
+        document.getElementById('suc').classList.add('show');
+    })
+    .catch(err => {
+        alert("Ошибка отправки заявки: " + err);
+    });
+}
 </script>
 </body>
 </html>
