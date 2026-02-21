@@ -206,7 +206,6 @@ input[type=file] { display: none; }
       <div id="page-find-exec" class="page active">
         <div class="pg-head"><div class="pg-eyebrow">Раздел — Фриланс</div><div class="pg-title">Ищу<br>исполнителя</div><div class="pg-sub">Опубликуем после модерации</div></div>
         <div class="field"><span class="f-label">Специализации</span><div class="chips" id="exec-specs"></div></div>
-
         <div class="field">
           <span class="f-label">Описание задачи</span>
           <div class="fmt-toolbar">
@@ -219,7 +218,6 @@ input[type=file] { display: none; }
           <textarea id="exec-desc" rows="5" maxlength="800" placeholder="Что нужно сделать, сроки, детали…" oninput="onTA(this,'ec');bp()"></textarea>
           <div class="char-hint"><span id="ec">0</span> / 400</div>
         </div>
-
         <div class="field">
           <span class="f-label">Оплата</span>
           <div class="price-row">
@@ -231,13 +229,11 @@ input[type=file] { display: none; }
           <div id="exec-cw" style="display:none;margin-top:8px"><input type="text" id="exec-cn" placeholder="TON, USDT, BTC…" oninput="bp()"></div>
           <div id="exec-rev" style="display:none;margin-top:8px"><div class="note">Укажите % от дохода игры. Например: 30 = 30% прибыли</div></div>
         </div>
-
         <div class="field">
           <span class="f-label">Контакт</span>
           <input type="text" id="exec-contact" placeholder="@username или https://…" maxlength="30" oninput="valContact(this);bp()">
           <div class="char-hint"><span id="exec-cl">0</span> / 30</div>
         </div>
-
         <div class="field">
           <span class="f-label">Изображение к объявлению</span>
           <div class="upload-zone" onclick="triggerUpload('exec-img-inp')" id="exec-img-zone"
@@ -249,7 +245,6 @@ input[type=file] { display: none; }
           <input type="file" id="exec-img-inp" accept="image/jpeg,image/png,image/webp" onchange="handleFiles(this,'exec-img-list',true)">
           <div class="file-list" id="exec-img-list"></div>
         </div>
-
         <div class="preview" id="exec-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="exec-pb"></div><div class="preview-tags" id="exec-pt"></div></div>
         <div class="boost-toggle" id="exec-boost-toggle" onclick="toggleBoost('exec')">
           <div class="bt-left">
@@ -265,7 +260,6 @@ input[type=file] { display: none; }
       <div id="page-find-job" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Раздел — Исполнители</div><div class="pg-title">Ищу<br>работу</div><div class="pg-sub">Заказчики найдут вас после публикации</div></div>
         <div class="field"><span class="f-label">Специализации</span><div class="chips" id="job-specs"></div></div>
-
         <div class="field">
           <span class="f-label">О себе и опыте</span>
           <div class="fmt-toolbar">
@@ -278,7 +272,6 @@ input[type=file] { display: none; }
           <textarea id="job-exp" rows="5" maxlength="800" placeholder="Опыт, проекты, навыки…" oninput="onTA(this,'jc');bp()"></textarea>
           <div class="char-hint"><span id="jc">0</span> / 400</div>
         </div>
-
         <div class="field">
           <span class="f-label">Ставка</span>
           <div class="price-row">
@@ -290,19 +283,16 @@ input[type=file] { display: none; }
           <div id="job-cw" style="display:none;margin-top:8px"><input type="text" id="job-cn" placeholder="TON, USDT, BTC…" oninput="bp()"></div>
           <div id="job-rev" style="display:none;margin-top:8px"><div class="note">% от дохода игры (роялти)</div></div>
         </div>
-
         <div class="field">
           <span class="f-label">Портфолио</span>
           <input type="url" id="job-port" placeholder="https://…" oninput="valUrl(this);bp()">
           <div id="job-port-err" style="font-size:10px;color:#ff8080;margin-top:4px;display:none">Только ссылка (https://…)</div>
         </div>
-
         <div class="field">
           <span class="f-label">Контакт</span>
           <input type="text" id="job-contact" placeholder="@username или https://…" maxlength="30" oninput="valContact(this);bp()">
           <div class="char-hint"><span id="job-cl">0</span> / 30</div>
         </div>
-
         <div class="field">
           <span class="f-label">Изображение к объявлению</span>
           <div class="upload-zone" onclick="triggerUpload('job-img-inp')" id="job-img-zone"
@@ -314,7 +304,6 @@ input[type=file] { display: none; }
           <input type="file" id="job-img-inp" accept="image/jpeg,image/png,image/webp" onchange="handleFiles(this,'job-img-list',true)">
           <div class="file-list" id="job-img-list"></div>
         </div>
-
         <div class="preview" id="job-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="job-pb"></div><div class="preview-tags" id="job-pt"></div></div>
         <div class="boost-toggle" id="job-boost-toggle" onclick="toggleBoost('job')">
           <div class="bt-left">
@@ -331,7 +320,6 @@ input[type=file] { display: none; }
         <div class="pg-head"><div class="pg-eyebrow">Раздел — Команды</div><div class="pg-title">Ищу<br>команду</div><div class="pg-sub">Найдите партнёров для проекта</div></div>
         <div class="field"><span class="f-label">Кто вы в проекте</span><div class="chips" id="team-role"></div></div>
         <div class="field"><span class="f-label">Ищем специалистов</span><div class="chips" id="team-need"></div></div>
-
         <div class="field">
           <span class="f-label">Описание проекта</span>
           <div class="fmt-toolbar">
@@ -344,7 +332,6 @@ input[type=file] { display: none; }
           <textarea id="team-desc" rows="6" maxlength="800" placeholder="Идея, механика, цели…" oninput="onTA(this,'tc');bp()"></textarea>
           <div class="char-hint"><span id="tc">0</span> / 400</div>
         </div>
-
         <div class="field"><span class="f-label">Условия</span><div class="sel-w"><select id="team-pay" onchange="bp()">
           <option value="">Выберите формат</option>
           <option>Роялти — % от прибыли</option>
@@ -352,13 +339,11 @@ input[type=file] { display: none; }
           <option>Для портфолио / бесплатно</option>
           <option>Обсуждается</option>
         </select></div></div>
-
         <div class="field">
           <span class="f-label">Контакт</span>
           <input type="text" id="team-contact" placeholder="@username или https://…" maxlength="30" oninput="valContact(this);bp()">
           <div class="char-hint"><span id="team-cl">0</span> / 30</div>
         </div>
-
         <div class="field">
           <span class="f-label">Изображение к объявлению</span>
           <div class="upload-zone" onclick="triggerUpload('team-img-inp')" id="team-img-zone"
@@ -370,7 +355,6 @@ input[type=file] { display: none; }
           <input type="file" id="team-img-inp" accept="image/jpeg,image/png,image/webp" onchange="handleFiles(this,'team-img-list',true)">
           <div class="file-list" id="team-img-list"></div>
         </div>
-
         <div class="preview" id="team-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="team-pb"></div><div class="preview-tags" id="team-pt"></div></div>
         <div class="boost-toggle" id="team-boost-toggle" onclick="toggleBoost('team')">
           <div class="bt-left">
@@ -382,19 +366,16 @@ input[type=file] { display: none; }
         <button class="btn" onclick="send('find-team')">Отправить на модерацию</button>
       </div>
 
-      <!-- ══ ГАЙДЫ ══ -->
+      <!-- ══ ГАЙДЫ ══ (без буста) -->
       <div id="page-guides" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Раздел — База знаний</div><div class="pg-title">Написать<br>гайд</div><div class="pg-sub">После проверки появится в канале</div></div>
-
         <div class="field">
           <span class="f-label">Заголовок</span>
           <input type="text" id="g-title" maxlength="80" placeholder="Как создать…" oninput="c(this,'gt');bp()">
           <div class="char-hint"><span id="gt">0</span> / 80</div>
         </div>
-
         <div class="field"><span class="f-label">Категория</span><div class="cat-chips" id="guide-cats"></div></div>
         <div class="field"><span class="f-label">Уровень</span><div class="sel-w"><select id="g-level"><option>Новичок</option><option>Средний</option><option>Продвинутый</option></select></div></div>
-
         <div class="field">
           <span class="f-label">Текст гайда</span>
           <div class="fmt-toolbar">
@@ -408,7 +389,6 @@ input[type=file] { display: none; }
           <textarea id="g-content" rows="11" maxlength="800" placeholder="Шаги, объяснения, примеры…" oninput="onTA(this,'gc');bp()"></textarea>
           <div class="char-hint"><span id="gc">0</span> / 400</div>
         </div>
-
         <div class="field">
           <span class="f-label">Прикрепить файлы к гайду</span>
           <div class="upload-zone" onclick="triggerUpload('guide-file-inp')" id="guide-file-zone"
@@ -420,15 +400,8 @@ input[type=file] { display: none; }
           <input type="file" id="guide-file-inp" multiple accept="image/*,.pdf,.rbxl,.lua,.txt" onchange="handleFiles(this,'guide-file-list',false)">
           <div class="file-list" id="guide-file-list"></div>
         </div>
-
         <div class="preview" id="guide-preview"><div class="preview-lbl">Превью гайда</div><div class="preview-body" id="guide-pb"></div><div class="preview-tags" id="guide-pt"></div></div>
-        <div class="boost-toggle" id="guide-boost-toggle" onclick="toggleBoost('guide')">
-          <div class="bt-left">
-            <div class="bt-name">🚀 Поднять в топ</div>
-            <div class="bt-desc">Пост закрепится в канале на 24 часа</div>
-          </div>
-          <span class="bt-price off" id="guide-boost-price">★ 25</span>
-        </div>
+        <!-- Буст для гайдов отключён -->
         <button class="btn" onclick="send('guides')">Отправить на модерацию</button>
       </div>
 
@@ -476,7 +449,7 @@ if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
 
 const API_URL = "https://freelanceroblox.py0drama.workers.dev/";
 
-const BOOST_STATE = { exec: false, job: false, team: false, guide: false };
+const BOOST_STATE = { exec: false, job: false, team: false };
 
 function toggleBoost(sec) {
   BOOST_STATE[sec] = !BOOST_STATE[sec];
@@ -492,15 +465,17 @@ function toggleBoost(sec) {
 }
 
 function getBoost(type) {
-  const secMap = {'find-exec':'exec','find-job':'job','find-team':'team','guides':'guide'};
+  const secMap = {'find-exec':'exec','find-job':'job','find-team':'team'};
   const sec = secMap[type];
+  // Гайды — буст недоступен
+  if (!sec) return 'none';
   return BOOST_STATE[sec] ? 'bump' : 'none';
 }
 
 const SPECS = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Тестер'];
 const ROLES = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Менеджер'];
 const GCATS = ['Скриптинг','Билдинг','Интерфейсы','VFX','Анимация','Оптимизация','Другое'];
-const S = { execSpecs:[], jobSpecs:[], teamRole:[], teamNeed:[], guideCat:null, boosts:{exec:'none',job:'none',team:'none',guide:'none'} };
+const S = { execSpecs:[], jobSpecs:[], teamRole:[], teamNeed:[], guideCat:null, boosts:{exec:'none',job:'none',team:'none'} };
 
 const FILES = {};
 let cur = 'find-exec';
@@ -508,49 +483,42 @@ let cur = 'find-exec';
 // ── Виртуальная длина: каждый перенос строки считается за 10 символов ──
 function virtualLen(text) {
   const newlines = (text.match(/\n/g) || []).length;
-  return text.length + newlines * 9; // +9 т.к. сам \n уже посчитан как 1
+  return text.length + newlines * 9;
 }
 
-// Ограничить textarea по виртуальной длине (maxlength на теге — физический буфер)
 function enforceVirtualMax(ta, max) {
-  // Обрезаем посимвольно с конца пока не уложимся
   while (virtualLen(ta.value) > max) {
     ta.value = ta.value.slice(0, -1);
   }
 }
 
-// Обработчик oninput для textarea с виртуальным лимитом
 function onTA(ta, counterId) {
-  const max = 400; // виртуальный лимит
+  const max = 400;
   enforceVirtualMax(ta, max);
   const el = document.getElementById(counterId);
   if (el) el.textContent = virtualLen(ta.value);
 }
 
-// Простой счётчик для обычных инпутов (без виртуального лимита)
 function c(el, id) {
   const x = document.getElementById(id);
   if (x) x.textContent = el.value.length;
 }
 
-// ── fmt(): вставляет форматирование и соблюдает виртуальный maxlength ──
 function fmt(textareaId, before, after) {
   const ta = document.getElementById(textareaId);
   if (!ta) return;
-  const max = 400; // виртуальный лимит
+  const max = 400;
   const s = ta.selectionStart, e = ta.selectionEnd;
   const selected = ta.value.substring(s, e);
   const replacement = before + (selected || 'текст') + after;
   const newVal = ta.value.substring(0, s) + replacement + ta.value.substring(e);
   ta.value = newVal;
   enforceVirtualMax(ta, max);
-  // Восстанавливаем позицию курсора
   const cursorStart = s + before.length;
   const cursorEnd   = selected ? s + before.length + selected.length : s + before.length + 'текст'.length;
   ta.selectionStart = Math.min(cursorStart, ta.value.length);
   ta.selectionEnd   = Math.min(cursorEnd, ta.value.length);
   ta.focus();
-  // Обновить счётчик
   const counterMap = {'exec-desc':'ec','job-exp':'jc','team-desc':'tc','g-content':'gc'};
   const cid = counterMap[textareaId];
   if (cid) { const cel = document.getElementById(cid); if(cel) cel.textContent = virtualLen(ta.value); }
@@ -648,11 +616,11 @@ function mkCC(id, arr, cb) {
     el.appendChild(d);
   });
 }
-mkC('exec-specs', SPECS, 'execSpecs', ()=>{bp();sb('exec');});
-mkC('job-specs',  SPECS, 'jobSpecs',  ()=>{bp();sb('job');});
+mkC('exec-specs', SPECS, 'execSpecs', ()=>bp());
+mkC('job-specs',  SPECS, 'jobSpecs',  ()=>bp());
 mkC('team-role',  ROLES, 'teamRole',  ()=>bp());
-mkC('team-need',  SPECS, 'teamNeed',  ()=>{bp();sb('team');});
-mkCC('guide-cats', GCATS, ()=>{bp();sb('guide');});
+mkC('team-need',  SPECS, 'teamNeed',  ()=>bp());
+mkCC('guide-cats', GCATS, ()=>bp());
 
 function goNav(id, el) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -668,8 +636,6 @@ function toggleMenu() {
   const op=s.classList.toggle('open'); o.style.display=op?'block':'none';
 }
 
-function sb(sec) { const el=document.getElementById(sec+'-boost'); if(el) el.classList.add('show'); }
-function pb2(el, sec, type) { el.closest('.boost').querySelectorAll('.boost-opt').forEach(x=>x.classList.remove('active')); el.classList.add('active'); S.boosts[sec]=type; }
 function ct(p) {
   const cu=document.getElementById(p+'-curr'), w=document.getElementById(p+'-cw'), rv=document.getElementById(p+'-rev');
   if(cu&&w) w.style.display=cu.value==='Crypto'?'block':'none';
@@ -687,10 +653,10 @@ function setp(id, body, tags) {
 }
 
 function bp() {
-  if(cur==='find-exec'){const sp=S.execSpecs,desc=vv('exec-desc'),price=vv('exec-price'),curr=vv('exec-curr'),con=vv('exec-contact');if(!sp.length&&!desc){document.getElementById('exec-preview').classList.remove('show');return;}let t='ИЩЕМ ИСПОЛНИТЕЛЯ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(desc)t+='\n\n'+desc;if(price)t+='\n\nОплата: '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('exec-cn')||'Crypto'):curr));if(con)t+='\nКонтакт: '+con;setp('exec',t,['#ищу_исполнителя','#фриланс_roblox',...sp.map(tag)]);sb('exec');}
-  else if(cur==='find-job'){const sp=S.jobSpecs,exp=vv('job-exp'),price=vv('job-price'),curr=vv('job-curr'),port=vv('job-port'),con=vv('job-contact');if(!sp.length&&!exp){document.getElementById('job-preview').classList.remove('show');return;}let t='ИЩУ РАБОТУ / ЗАКАЗЫ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(exp)t+='\n\n'+exp;if(price)t+='\n\nСтавка: от '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('job-cn')||'Crypto'):curr));if(port)t+='\nПортфолио: '+port;if(con)t+='\nКонтакт: '+con;setp('job',t,['#ищу_работу','#фриланс_roblox',...sp.map(tag)]);sb('job');}
-  else if(cur==='find-team'){const roles=S.teamRole,need=S.teamNeed,desc=vv('team-desc'),pay=vv('team-pay'),con=vv('team-contact');if(!roles.length&&!desc){document.getElementById('team-preview').classList.remove('show');return;}let t='ИЩЕМ КОМАНДУ\n';if(roles.length)t+='\nЯ: '+roles.join(', ');if(need.length)t+='\nИщем: '+need.join(', ');if(desc)t+='\n\n'+desc;if(pay)t+='\n\nУсловия: '+pay;if(con)t+='\nКонтакт: '+con;setp('team',t,['#ищу_команду','#roblox_team',...need.map(tag)]);sb('team');}
-  else if(cur==='guides'){const title=vv('g-title'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level');if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}let t='ГАЙД\n';if(title)t+='\n'+title;if(cat)t+='\nКатегория: '+cat;if(level)t+='\nУровень: '+level;if(content)t+='\n\n'+content.substring(0,400)+(content.length>400?'...':'');setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));sb('guide');}
+  if(cur==='find-exec'){const sp=S.execSpecs,desc=vv('exec-desc'),price=vv('exec-price'),curr=vv('exec-curr'),con=vv('exec-contact');if(!sp.length&&!desc){document.getElementById('exec-preview').classList.remove('show');return;}let t='ИЩЕМ ИСПОЛНИТЕЛЯ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(desc)t+='\n\n'+desc;if(price)t+='\n\nОплата: '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('exec-cn')||'Crypto'):curr));if(con)t+='\nКонтакт: '+con;setp('exec',t,['#ищу_исполнителя','#фриланс_roblox',...sp.map(tag)]);}
+  else if(cur==='find-job'){const sp=S.jobSpecs,exp=vv('job-exp'),price=vv('job-price'),curr=vv('job-curr'),port=vv('job-port'),con=vv('job-contact');if(!sp.length&&!exp){document.getElementById('job-preview').classList.remove('show');return;}let t='ИЩУ РАБОТУ / ЗАКАЗЫ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(exp)t+='\n\n'+exp;if(price)t+='\n\nСтавка: от '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('job-cn')||'Crypto'):curr));if(port)t+='\nПортфолио: '+port;if(con)t+='\nКонтакт: '+con;setp('job',t,['#ищу_работу','#фриланс_roblox',...sp.map(tag)]);}
+  else if(cur==='find-team'){const roles=S.teamRole,need=S.teamNeed,desc=vv('team-desc'),pay=vv('team-pay'),con=vv('team-contact');if(!roles.length&&!desc){document.getElementById('team-preview').classList.remove('show');return;}let t='ИЩЕМ КОМАНДУ\n';if(roles.length)t+='\nЯ: '+roles.join(', ');if(need.length)t+='\nИщем: '+need.join(', ');if(desc)t+='\n\n'+desc;if(pay)t+='\n\nУсловия: '+pay;if(con)t+='\nКонтакт: '+con;setp('team',t,['#ищу_команду','#roblox_team',...need.map(tag)]);}
+  else if(cur==='guides'){const title=vv('g-title'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level');if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}let t='ГАЙД\n';if(title)t+='\n'+title;if(cat)t+='\nКатегория: '+cat;if(level)t+='\nУровень: '+level;if(content)t+='\n\n'+content.substring(0,400)+(content.length>400?'...':'');setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));}
 }
 
 function validate(type) {
@@ -756,7 +722,6 @@ function send(type) {
   const imgMap = {'find-exec':'exec-img-inp','find-job':'job-img-inp','find-team':'team-img-inp','guides':'guide-file-inp'};
   const fid = imgMap[type];
   const attachedFiles = FILES[fid] || [];
-
   const payload = buildP(type);
 
   if (attachedFiles.length > 0) {
@@ -849,6 +814,7 @@ function renderPost(p) {
   if (desc.length > 120) desc = desc.substring(0, 120) + '…';
 
   const isAccepted = p.status === 'accepted';
+  const isGuide = p.type === 'guides';
   const hasBoosted = p.boosted_until && new Date(p.boosted_until.endsWith("Z") ? p.boosted_until : p.boosted_until + "Z") > new Date();
   const boostLabel = hasBoosted ? '⭐ Буст активен' : '🚀 Поднять в топ · 25★';
 
@@ -859,7 +825,7 @@ function renderPost(p) {
     </div>
     <div class="mpc-desc">${desc}</div>
     <div class="mpc-date">📅 ${date}</div>
-    ${isAccepted ? `<div class="mpc-boost">
+    ${isAccepted && !isGuide ? `<div class="mpc-boost">
       <div class="mpc-boost-btn ${hasBoosted ? 'active-boost' : ''}" onclick="boostPost(${p.id}, this)">${boostLabel}</div>
     </div>` : ''}
   `;
