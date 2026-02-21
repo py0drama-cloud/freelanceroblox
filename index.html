@@ -102,13 +102,13 @@ textarea { resize: none; line-height: 1.65; }
 .preview-tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
 .ptag { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); padding: 3px 9px; border-radius: 20px; font-family: monospace; }
 
-/* ── Форматирование текста ── */
+
 .fmt-toolbar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
 .fmt-btn { padding: 6px 12px; border-radius: 8px; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid var(--glass-border); color: var(--text-mid); font-size: 12px; font-weight: 700; cursor: pointer; transition: all .15s; user-select: none; font-family: 'Manrope', sans-serif; }
 .fmt-btn:active { background: rgba(255,255,255,0.1); color: #fff; transform: scale(.93); }
 .fmt-hint { font-size: 10px; color: var(--text-dim); margin-bottom: 8px; font-family: monospace; }
 
-/* ── Загрузка файлов ── */
+
 .upload-zone { border: 1px dashed rgba(255,255,255,0.14); border-radius: var(--r-sm); padding: 20px 16px; text-align: center; cursor: pointer; transition: border-color .18s, background .18s; background: rgba(255,255,255,0.02); }
 .upload-zone:hover, .upload-zone.drag { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
 .upload-zone .uz-icon { font-size: 22px; margin-bottom: 6px; opacity: 0.5; }
@@ -153,7 +153,7 @@ input[type=file] { display: none; }
 @keyframes toast-in { from { opacity:0; transform:translateY(-10px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
 @keyframes toast-out { from { opacity:1; } to { opacity:0; transform:translateY(-6px); } }
 
-/* ── Мои посты ── */
+
 .my-post-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--r); padding: 16px; margin-bottom: 12px; transition: border-color .16s; }
 .my-post-card:active { border-color: var(--glass-border-h); }
 .mpc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
@@ -182,7 +182,7 @@ input[type=file] { display: none; }
   <div class="sb-brand">Roblox Studio</div>
   <div class="sb-item" onclick="goNav('my-posts'); toggleMenu()">📋 Мои посты</div>
   <div class="sb-item" onclick="goNav('support'); toggleMenu()">🎧 Поддержка</div>
-  <div class="sb-item" onclick="typeof tg!='undefined'&&tg.close?tg.close():null">❌ Закрыть</div>
+  <div class="sb-item" onclick="typeof tg!='undefined'&&tg.close?tg.close():null">✕ Закрыть</div>
   <div class="sb-ver">v4.0 · Stable</div>
 </div>
 
@@ -455,7 +455,6 @@ input[type=file] { display: none; }
 </div>
 
 <script>
-// ── Toast ─────────────────────────────────────────────────────
 function toast(msg, type='err', ms=3000) {
   const wrap = document.getElementById('toast-wrap');
   const el = document.createElement('div');
@@ -465,7 +464,6 @@ function toast(msg, type='err', ms=3000) {
   setTimeout(() => { el.style.animation = 'toast-out .22s ease forwards'; setTimeout(() => el.remove(), 220); }, ms);
 }
 
-// ── Telegram ──────────────────────────────────────────────────
 const tg = (typeof Telegram !== 'undefined' && Telegram.WebApp) ? Telegram.WebApp : {
   expand: () => {}, ready: () => {}, initDataUnsafe: { user: { id: 0 } }, showAlert: m => alert(m), close: () => {}
 };
@@ -474,7 +472,6 @@ if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
 
 const API_URL = "https://freelanceroblox.py0drama.workers.dev/";
 
-// ── Данные ────────────────────────────────────────────────────
 const SPECS = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Тестер'];
 const ROLES = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Менеджер'];
 const GCATS = ['Скриптинг','Билдинг','Интерфейсы','VFX','Анимация','Оптимизация','Другое'];
@@ -484,7 +481,6 @@ const S = { execSpecs:[], jobSpecs:[], teamRole:[], teamNeed:[], guideCat:null, 
 const FILES = {};
 let cur = 'find-exec';
 
-// ── Форматирование текста ─────────────────────────────────────
 function fmt(textareaId, before, after) {
   const ta = document.getElementById(textareaId);
   if (!ta) return;
@@ -503,7 +499,6 @@ function fmt(textareaId, before, after) {
   bp();
 }
 
-// ── Файлы ─────────────────────────────────────────────────────
 function triggerUpload(id) { document.getElementById(id)?.click(); }
 
 function handleFiles(input, listId, imgOnly) {
@@ -554,7 +549,6 @@ function dropFile(e, inputId, imgOnly) {
   handleFiles(fakeInput, listId, imgOnly);
 }
 
-// ── Валидация контакта ────────────────────────────────────────
 function valContact(inp) {
   const v = inp.value;
   const cl = document.getElementById(inp.id.replace('-contact','-cl') + '') || 
@@ -565,7 +559,6 @@ function valContact(inp) {
   inp.classList.toggle('invalid', !ok && v.length > 0);
 }
 
-// ── Валидация URL ─────────────────────────────────────────────
 function valUrl(inp) {
   const v = inp.value.trim();
   const errId = inp.id + '-err';
@@ -575,7 +568,6 @@ function valUrl(inp) {
   inp.classList.toggle('invalid', !ok);
 }
 
-// ── Лимит числа ───────────────────────────────────────────────
 function limitNum(inp, maxLen) {
   // Только целые положительные числа, максимум maxLen символов
   let v = inp.value.replace(/[^0-9]/g, '');
@@ -584,7 +576,6 @@ function limitNum(inp, maxLen) {
   inp.value = v;
 }
 
-// ── Чипы ──────────────────────────────────────────────────────
 function mkC(id, arr, key, cb) {
   const el = document.getElementById(id); if (!el) return;
   arr.forEach(s => {
@@ -607,7 +598,6 @@ mkC('team-role',  ROLES, 'teamRole',  ()=>bp());
 mkC('team-need',  SPECS, 'teamNeed',  ()=>{bp();sb('team');});
 mkCC('guide-cats', GCATS, ()=>{bp();sb('guide');});
 
-// ── Навигация ─────────────────────────────────────────────────
 function goNav(id, el) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -622,7 +612,6 @@ function toggleMenu() {
   const op=s.classList.toggle('open'); o.style.display=op?'block':'none';
 }
 
-// ── Вспомогательные ───────────────────────────────────────────
 function sb(sec) { const el=document.getElementById(sec+'-boost'); if(el) el.classList.add('show'); }
 function pb2(el, sec, type) { el.closest('.boost').querySelectorAll('.boost-opt').forEach(x=>x.classList.remove('active')); el.classList.add('active'); S.boosts[sec]=type; }
 function ct(p) {
@@ -642,7 +631,6 @@ function setp(id, body, tags) {
   card.classList.add('show');
 }
 
-// ── Превью ────────────────────────────────────────────────────
 function bp() {
   if(cur==='find-exec'){const sp=S.execSpecs,desc=vv('exec-desc'),price=vv('exec-price'),curr=vv('exec-curr'),con=vv('exec-contact');if(!sp.length&&!desc){document.getElementById('exec-preview').classList.remove('show');return;}let t='ИЩЕМ ИСПОЛНИТЕЛЯ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(desc)t+='\n\n'+desc;if(price)t+='\n\nОплата: '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('exec-cn')||'Crypto'):curr));if(con)t+='\nКонтакт: '+con;setp('exec',t,['#ищу_исполнителя','#фриланс_roblox',...sp.map(tag)]);sb('exec');}
   else if(cur==='find-job'){const sp=S.jobSpecs,exp=vv('job-exp'),price=vv('job-price'),curr=vv('job-curr'),port=vv('job-port'),con=vv('job-contact');if(!sp.length&&!exp){document.getElementById('job-preview').classList.remove('show');return;}let t='ИЩУ РАБОТУ / ЗАКАЗЫ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(exp)t+='\n\n'+exp;if(price)t+='\n\nСтавка: от '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('job-cn')||'Crypto'):curr));if(port)t+='\nПортфолио: '+port;if(con)t+='\nКонтакт: '+con;setp('job',t,['#ищу_работу','#фриланс_roblox',...sp.map(tag)]);sb('job');}
@@ -650,7 +638,6 @@ function bp() {
   else if(cur==='guides'){const title=vv('g-title'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level');if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}let t='ГАЙД\n';if(title)t+='\n'+title;if(cat)t+='\nКатегория: '+cat;if(level)t+='\nУровень: '+level;if(content)t+='\n\n'+content.substring(0,300)+(content.length>300?'...':'');setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));sb('guide');}
 }
 
-// ── Валидация ─────────────────────────────────────────────────
 function validate(type) {
   if(type==='find-exec'){
     if(!S.execSpecs.length&&!vv('exec-desc')) return 'Выберите специализации или опишите задачу';
@@ -680,7 +667,6 @@ function validate(type) {
   return null;
 }
 
-// ── Сборка payload ────────────────────────────────────────────
 function buildP(type) {
   const uid = tg.initDataUnsafe?.user?.id || 0;
   const bk = type==='find-exec'?'exec':type==='find-job'?'job':type==='find-team'?'team':'guide';
@@ -708,7 +694,6 @@ function buildP(type) {
   return p;
 }
 
-// ── Отправка с файлами ────────────────────────────────────────
 function send(type) {
   const err = validate(type); if(err){ toast(err); return; }
   const bk = type==='find-exec'?'exec':type==='find-job'?'job':type==='find-team'?'team':'guide';
@@ -754,7 +739,6 @@ function doFetchForm(fd, type) {
     .catch(e=>{ document.querySelectorAll('.btn').forEach(b=>b.disabled=false); toast('Ошибка: '+e.message); });
 }
 
-// ── Экран успеха ──────────────────────────────────────────────
 const SD = {
   'find-exec':{lbl:'Объявление создано',icon:'✓',title:'Отправлено',sub:'После проверки пост появится в канале.'},
   'find-job': {lbl:'Анкета создана',    icon:'✓',title:'Отправлено',sub:'Заказчики найдут вас после публикации.'},
@@ -773,7 +757,6 @@ function showSuc(type) {
 function closeSuc() { document.getElementById('suc').classList.remove('show'); }
 
 
-// ── Мои посты ─────────────────────────────────────────────────
 const TYPE_LABELS = {
   'find-exec': '🔍 Исполнитель',
   'find-job':  '💼 Работа',
@@ -836,10 +819,9 @@ function renderPost(p) {
 
 async function boostPost(postId, btn) {
   if (btn.classList.contains('active-boost')) {
-    toast('Буст уже активен для этого поста', 'ok');
+    toast('Буст уже активен', 'ok');
     return;
   }
-  if (!confirm('Поднять пост в топ за 25 ⭐?')) return;
   const uid = tg.initDataUnsafe?.user?.id || 0;
   btn.textContent = '…';
   btn.style.opacity = '0.5';
@@ -850,14 +832,11 @@ async function boostPost(postId, btn) {
       body: JSON.stringify({type: 'boost_post', post_id: postId, user_id: uid, boost: 'bump'})
     });
     const data = await res.json();
+    btn.textContent = '🚀 Поднять в топ · 25★';
+    btn.style.opacity = '1';
     if (data.status === 'ok') {
-      btn.textContent = '⭐ Буст активен';
-      btn.classList.add('active-boost');
-      btn.style.opacity = '1';
-      toast('Буст активирован на 24 часа!', 'ok');
+      toast('Счёт на оплату отправлен в бот ✅', 'ok');
     } else {
-      btn.textContent = '🚀 Поднять в топ · 25★';
-      btn.style.opacity = '1';
       toast(data.message || 'Ошибка', 'err');
     }
   } catch(e) {
@@ -867,7 +846,6 @@ async function boostPost(postId, btn) {
   }
 }
 
-// ── Частицы ───────────────────────────────────────────────────
 const canvas=document.getElementById('pc');const ctx=canvas.getContext('2d');
 function rs(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}rs();window.addEventListener('resize',rs);
 class P{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.s=Math.random()*1.6+0.4;this.vx=Math.random()*.45-.22;this.vy=Math.random()*.45-.22;this.o=Math.random()*.45+0.15;}update(){this.x+=this.vx;this.y+=this.vy;if(this.x>canvas.width)this.x=0;if(this.x<0)this.x=canvas.width;if(this.y>canvas.height)this.y=0;if(this.y<0)this.y=canvas.height;}draw(){ctx.fillStyle=`rgba(255,255,255,${this.o})`;ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fill();}}
@@ -875,5 +853,3 @@ const pts=[];for(let i=0;i<60;i++)pts.push(new P());
 function anim(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{p.update();p.draw();});pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.strokeStyle=`rgba(255,255,255,${.08*(1-d/100)})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}));requestAnimationFrame(anim);}
 anim();
 </script>
-</body>
-</html>
