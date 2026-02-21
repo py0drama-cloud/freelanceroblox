@@ -51,7 +51,7 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 .sidebar { position: fixed; top: 0; left: -290px; width: 270px; height: 100%; z-index: 999; background: rgba(10,10,10,0.92); backdrop-filter: blur(30px) saturate(150%); border-right: 1px solid var(--glass-border); padding: 28px 18px 24px; padding-top: calc(28px + var(--tg-safe-top)); display: flex; flex-direction: column; gap: 3px; transition: left .28s cubic-bezier(.4,0,.2,1); }
 .sidebar.open { left: 0; }
 .sb-brand { font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,0.9); margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--glass-border); }
-.sb-item { padding: 12px 14px; border-radius: 14px; font-size: 13px; font-weight: 500; color: var(--text-mid); cursor: pointer; transition: background .14s, color .14s; }
+.sb-item { padding: 12px 14px; border-radius: 14px; font-size: 13px; font-weight: 500; color: var(--text-mid); cursor: pointer; transition: background .14s, color .14s; display: flex; align-items: center; gap: 10px; }
 .sb-item:active { background: rgba(255,255,255,0.05); color: var(--text); }
 .sb-ver { margin-top: auto; font-size: 10px; color: var(--text-dim); font-family: monospace; letter-spacing: .06em; }
 .header { flex-shrink: 0; height: 54px; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: rgba(10,10,10,0.88); border-bottom: 1px solid var(--glass-border); backdrop-filter: blur(20px); z-index: 100; }
@@ -171,6 +171,15 @@ input[type=file] { display: none; }
 .posts-empty { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 13px; }
 .posts-empty .pe-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.4; }
 .posts-loading { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; }
+
+.boost-toggle { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; margin-bottom: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid var(--glass-border); border-radius: var(--r-sm); cursor: pointer; transition: all .16s; user-select: none; }
+.boost-toggle.on { border-color: rgba(255,200,50,0.35); background: linear-gradient(135deg, rgba(255,200,50,0.08) 0%, rgba(255,200,50,0.02) 100%); }
+.boost-toggle:active { transform: scale(.99); }
+.bt-left { display: flex; flex-direction: column; gap: 2px; }
+.bt-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.bt-desc { font-size: 11px; color: var(--text-dim); }
+.bt-price { font-size: 10px; font-weight: 700; font-family: monospace; color: rgba(255,200,50,0.8); background: rgba(255,200,50,0.08); border: 1px solid rgba(255,200,50,0.2); padding: 4px 11px; border-radius: 20px; flex-shrink: 0; }
+.bt-price.off { color: var(--text-dim); background: transparent; border-color: rgba(255,255,255,0.06); }
 </style>
 </head>
 <body>
@@ -180,9 +189,9 @@ input[type=file] { display: none; }
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 <div class="sidebar" id="sidebar">
   <div class="sb-brand">Roblox Developers</div>
-  <div class="sb-item" onclick="goNav('my-posts'); toggleMenu()">📋 Мои посты</div>
-  <div class="sb-item" onclick="goNav('support'); toggleMenu()">🎧 Поддержка</div>
-  <div class="sb-item" onclick="typeof tg!='undefined'&&tg.close?tg.close():null">✕ Закрыть</div>
+  <div class="sb-item" onclick="goNav('my-posts'); toggleMenu()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/><line x1="9" y1="9" x2="11" y2="9"/></svg> Мои посты</div>
+  <div class="sb-item" onclick="goNav('support'); toggleMenu()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Поддержка</div>
+  <div class="sb-item" onclick="typeof tg!='undefined'&&tg.close?tg.close():null"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Закрыть</div>
   <div class="sb-ver">v4.0 · Stable</div>
 </div>
 
@@ -250,6 +259,13 @@ input[type=file] { display: none; }
         </div>
 
         <div class="preview" id="exec-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="exec-pb"></div><div class="preview-tags" id="exec-pt"></div></div>
+        <div class="boost-toggle" id="exec-boost-toggle" onclick="toggleBoost('exec')">
+          <div class="bt-left">
+            <div class="bt-name">🚀 Поднять в топ</div>
+            <div class="bt-desc">Пост закрепится в канале на 24 часа</div>
+          </div>
+          <span class="bt-price off" id="exec-boost-price">★ 25</span>
+        </div>
         <button class="btn" onclick="send('find-exec')">Отправить на модерацию</button>
       </div>
 
@@ -308,6 +324,13 @@ input[type=file] { display: none; }
         </div>
 
         <div class="preview" id="job-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="job-pb"></div><div class="preview-tags" id="job-pt"></div></div>
+        <div class="boost-toggle" id="job-boost-toggle" onclick="toggleBoost('job')">
+          <div class="bt-left">
+            <div class="bt-name">🚀 Поднять в топ</div>
+            <div class="bt-desc">Пост закрепится в канале на 24 часа</div>
+          </div>
+          <span class="bt-price off" id="job-boost-price">★ 25</span>
+        </div>
         <button class="btn" onclick="send('find-job')">Отправить на модерацию</button>
       </div>
 
@@ -357,6 +380,13 @@ input[type=file] { display: none; }
         </div>
 
         <div class="preview" id="team-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="team-pb"></div><div class="preview-tags" id="team-pt"></div></div>
+        <div class="boost-toggle" id="team-boost-toggle" onclick="toggleBoost('team')">
+          <div class="bt-left">
+            <div class="bt-name">🚀 Поднять в топ</div>
+            <div class="bt-desc">Пост закрепится в канале на 24 часа</div>
+          </div>
+          <span class="bt-price off" id="team-boost-price">★ 25</span>
+        </div>
         <button class="btn" onclick="send('find-team')">Отправить на модерацию</button>
       </div>
 
@@ -400,6 +430,13 @@ input[type=file] { display: none; }
         </div>
 
         <div class="preview" id="guide-preview"><div class="preview-lbl">Превью гайда</div><div class="preview-body" id="guide-pb"></div><div class="preview-tags" id="guide-pt"></div></div>
+        <div class="boost-toggle" id="guide-boost-toggle" onclick="toggleBoost('guide')">
+          <div class="bt-left">
+            <div class="bt-name">🚀 Поднять в топ</div>
+            <div class="bt-desc">Пост закрепится в канале на 24 часа</div>
+          </div>
+          <span class="bt-price off" id="guide-boost-price">★ 25</span>
+        </div>
         <button class="btn" onclick="send('guides')">Отправить на модерацию</button>
       </div>
 
@@ -446,6 +483,28 @@ tg.expand(); tg.ready();
 if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
 
 const API_URL = "https://freelanceroblox.py0drama.workers.dev/";
+
+
+const BOOST_STATE = { exec: false, job: false, team: false, guide: false };
+
+function toggleBoost(sec) {
+  BOOST_STATE[sec] = !BOOST_STATE[sec];
+  const toggle = document.getElementById(sec + '-boost-toggle');
+  const price = document.getElementById(sec + '-boost-price');
+  if (BOOST_STATE[sec]) {
+    toggle.classList.add('on');
+    price.classList.remove('off');
+  } else {
+    toggle.classList.remove('on');
+    price.classList.add('off');
+  }
+}
+
+function getBoost(type) {
+  const secMap = {'find-exec':'exec','find-job':'job','find-team':'team','guides':'guide'};
+  const sec = secMap[type];
+  return BOOST_STATE[sec] ? 'bump' : 'none';
+}
 
 const SPECS = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Тестер'];
 const ROLES = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Менеджер'];
@@ -644,7 +703,7 @@ function validate(type) {
 
 function buildP(type) {
   const uid = tg.initDataUnsafe?.user?.id || 0;
-  const p = { user_id: uid, type, boost: 'none' };
+  const p = { user_id: uid, type, boost: getBoost(type) };
   if(type==='find-exec'){
     p.specs=S.execSpecs;p.description=vv('exec-desc');
     p.price=vv('exec-price');p.currency=vv('exec-curr');
@@ -670,6 +729,8 @@ function buildP(type) {
 
 function send(type) {
   const err = validate(type); if(err){ toast(err); return; }
+  const boost = getBoost(type);
+  if(boost === 'bump' && !confirm('Добавить буст за 25 ⭐? Счёт придёт в бот после модерации.')) return;
 
   // Собираем файлы
   const imgMap = {'find-exec':'exec-img-inp','find-job':'job-img-inp','find-team':'team-img-inp','guides':'guide-file-inp'};
