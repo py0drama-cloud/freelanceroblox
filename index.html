@@ -76,9 +76,12 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 .pg-sub { margin-top: 6px; font-size: 12px; color: var(--text-dim); font-weight: 400; }
 .field { margin-bottom: 22px; }
 .f-label { display: block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .2em; color: var(--text-dim); margin-bottom: 10px; }
-input[type=text], input[type=url], textarea, select { width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: var(--r-sm); padding: 13px 15px; color: var(--text); font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 400; outline: none; appearance: none; -webkit-appearance: none; transition: border-color .18s, box-shadow .18s; }
+input[type=text], input[type=url], input[type=number], textarea, select { width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: var(--r-sm); padding: 13px 15px; color: var(--text); font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 400; outline: none; appearance: none; -webkit-appearance: none; transition: border-color .18s, box-shadow .18s; }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { opacity: 1; }
 input::placeholder, textarea::placeholder { color: var(--text-dim); }
 input:focus, textarea:focus, select:focus { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 0 3px rgba(255,255,255,0.04); }
+input.invalid, textarea.invalid { border-color: rgba(255,80,80,0.4); }
 textarea { resize: none; line-height: 1.65; }
 .sel-w { position: relative; }
 .sel-w::after { content: '↓'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-dim); pointer-events: none; font-size: 13px; }
@@ -98,6 +101,27 @@ textarea { resize: none; line-height: 1.65; }
 .preview-body { font-size: 12px; line-height: 1.75; color: var(--text-mid); white-space: pre-wrap; word-break: break-word; }
 .preview-tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
 .ptag { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); padding: 3px 9px; border-radius: 20px; font-family: monospace; }
+
+/* ── Форматирование текста ── */
+.fmt-toolbar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+.fmt-btn { padding: 6px 12px; border-radius: 8px; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid var(--glass-border); color: var(--text-mid); font-size: 12px; font-weight: 700; cursor: pointer; transition: all .15s; user-select: none; font-family: 'Manrope', sans-serif; }
+.fmt-btn:active { background: rgba(255,255,255,0.1); color: #fff; transform: scale(.93); }
+.fmt-hint { font-size: 10px; color: var(--text-dim); margin-bottom: 8px; font-family: monospace; }
+
+/* ── Загрузка файлов ── */
+.upload-zone { border: 1px dashed rgba(255,255,255,0.14); border-radius: var(--r-sm); padding: 20px 16px; text-align: center; cursor: pointer; transition: border-color .18s, background .18s; background: rgba(255,255,255,0.02); }
+.upload-zone:hover, .upload-zone.drag { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+.upload-zone .uz-icon { font-size: 22px; margin-bottom: 6px; opacity: 0.5; }
+.upload-zone .uz-txt { font-size: 12px; color: var(--text-dim); }
+.upload-zone .uz-sub { font-size: 10px; color: var(--text-dim); margin-top: 3px; opacity: 0.6; }
+input[type=file] { display: none; }
+.file-list { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.file-item { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; }
+.fi-name { font-size: 12px; color: var(--text-mid); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fi-size { font-size: 10px; color: var(--text-dim); margin: 0 10px; flex-shrink: 0; font-family: monospace; }
+.fi-rm { font-size: 14px; color: rgba(255,80,80,0.6); cursor: pointer; flex-shrink: 0; padding: 2px 4px; line-height: 1; }
+.fi-rm:active { color: rgba(255,80,80,0.9); }
+
 .boost { display: none; margin-bottom: 22px; }
 .boost.show { display: block; animation: fadeup .22s ease; }
 .boost-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -122,7 +146,6 @@ textarea { resize: none; line-height: 1.65; }
 .suc-ey::before,.suc-ey::after { content:''; width:16px; height:1px; background:rgba(255,255,255,0.15); }
 .suc-title { font-family: 'Unbounded', sans-serif; font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #fff 0%, #a3a3a3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
 .suc-sub { font-size: 13px; color: var(--text-dim); line-height: 1.65; max-width: 260px; margin-bottom: 36px; }
-/* Toast уведомления */
 #toast-wrap { position: fixed; top: 70px; left: 0; right: 0; z-index: 3000; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
 .toast { background: rgba(20,20,20,0.96); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px 18px; font-size: 13px; font-weight: 500; color: var(--text); max-width: 300px; text-align: center; pointer-events: none; animation: toast-in .22s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
 .toast.err { border-color: rgba(255,80,80,0.25); color: #ff8080; }
@@ -141,7 +164,7 @@ textarea { resize: none; line-height: 1.65; }
   <div class="sb-item" onclick="goNav('support'); toggleMenu()">Поддержка</div>
   <div class="sb-item" onclick="toggleMenu()">Мои посты</div>
   <div class="sb-item" onclick="typeof tg!='undefined'&&tg.close?tg.close():null">Закрыть</div>
-  <div class="sb-ver">v3.0 · Stable</div>
+  <div class="sb-ver">v4.0 · Stable</div>
 </div>
 
 <div id="app">
@@ -159,52 +182,233 @@ textarea { resize: none; line-height: 1.65; }
   <div class="scroll-area">
     <div class="content">
 
+      <!-- ══ ИЩУ ИСПОЛНИТЕЛЯ ══ -->
       <div id="page-find-exec" class="page active">
         <div class="pg-head"><div class="pg-eyebrow">Раздел — Фриланс</div><div class="pg-title">Ищу<br>исполнителя</div><div class="pg-sub">Опубликуем после модерации</div></div>
         <div class="field"><span class="f-label">Специализации</span><div class="chips" id="exec-specs"></div></div>
-        <div class="field"><span class="f-label">Описание задачи</span><textarea id="exec-desc" rows="5" maxlength="1000" placeholder="Что нужно сделать, сроки, детали..." oninput="c(this,'ec');bp()"></textarea><div class="char-hint"><span id="ec">0</span> / 1000</div></div>
-        <div class="field"><span class="f-label">Оплата</span><div class="price-row"><input type="text" id="exec-price" placeholder="Сумма или «договорная»" oninput="bp()"><div class="sel-w"><select id="exec-curr" onchange="ct('exec');bp()"><option>RUB</option><option>USD</option><option>Robux</option><option>KZT</option><option>Crypto</option></select></div></div><div id="exec-cw" style="display:none;margin-top:8px"><input type="text" id="exec-cn" placeholder="TON, USDT, BTC…" oninput="bp()"></div></div>
-        <div class="field"><span class="f-label">Контакт</span><input type="text" id="exec-contact" placeholder="@username или ссылка" oninput="bp()"></div>
+
+        <div class="field">
+          <span class="f-label">Описание задачи</span>
+          <div class="fmt-toolbar">
+            <div class="fmt-btn" onclick="fmt('exec-desc','**','**')" title="Жирный">𝐁</div>
+            <div class="fmt-btn" onclick="fmt('exec-desc','_','_')" title="Курсив">𝐼</div>
+            <div class="fmt-btn" onclick="fmt('exec-desc','`','`')" title="Код">&lt;/&gt;</div>
+            <div class="fmt-btn" onclick="fmt('exec-desc','||','||')" title="Спойлер">👁</div>
+          </div>
+          <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
+          <textarea id="exec-desc" rows="5" maxlength="200" placeholder="Что нужно сделать, сроки, детали…" oninput="c(this,'ec');bp()"></textarea>
+          <div class="char-hint"><span id="ec">0</span> / 200</div>
+        </div>
+
+        <div class="field">
+          <span class="f-label">Оплата</span>
+          <div class="price-row">
+            <input type="number" id="exec-price" placeholder="Сумма" min="0" maxlength="10" oninput="limitNum(this,10);bp()">
+            <div class="sel-w"><select id="exec-curr" onchange="ct('exec');bp()">
+              <option>RUB</option><option>USD</option><option>Robux</option><option>KZT</option><option>Crypto</option><option>%revenue</option>
+            </select></div>
+          </div>
+          <div id="exec-cw" style="display:none;margin-top:8px"><input type="text" id="exec-cn" placeholder="TON, USDT, BTC…" oninput="bp()"></div>
+          <div id="exec-rev" style="display:none;margin-top:8px"><div class="note">Укажите % от дохода игры. Например: 30 = 30% прибыли</div></div>
+        </div>
+
+        <div class="field">
+          <span class="f-label">Контакт</span>
+          <input type="text" id="exec-contact" placeholder="@username или https://…" maxlength="15" oninput="valContact(this);bp()">
+          <div class="char-hint"><span id="exec-cl">0</span> / 15</div>
+        </div>
+
+        <div class="field">
+          <span class="f-label">Изображение к объявлению</span>
+          <div class="upload-zone" onclick="triggerUpload('exec-img-inp')" id="exec-img-zone"
+            ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,'exec-img-inp',true)">
+            <div class="uz-icon">🖼</div>
+            <div class="uz-txt">Нажмите или перетащите изображение</div>
+            <div class="uz-sub">JPG, PNG, WEBP · до 5 МБ</div>
+          </div>
+          <input type="file" id="exec-img-inp" accept="image/jpeg,image/png,image/webp" onchange="handleFiles(this,'exec-img-list',true)">
+          <div class="file-list" id="exec-img-list"></div>
+        </div>
+
         <div class="preview" id="exec-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="exec-pb"></div><div class="preview-tags" id="exec-pt"></div></div>
-        <div class="boost" id="exec-boost"><div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div><div class="boost-opt" onclick="pb2(this,'exec','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div><div class="boost-opt" onclick="pb2(this,'exec','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div><div class="boost-opt active" onclick="pb2(this,'exec','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div></div>
+        <div class="boost" id="exec-boost">
+          <div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div>
+          <div class="boost-opt" onclick="pb2(this,'exec','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div>
+          <div class="boost-opt" onclick="pb2(this,'exec','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div>
+          <div class="boost-opt active" onclick="pb2(this,'exec','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div>
+        </div>
         <button class="btn" onclick="send('find-exec')">Отправить на модерацию</button>
       </div>
 
+      <!-- ══ ИЩУ РАБОТУ ══ -->
       <div id="page-find-job" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Раздел — Исполнители</div><div class="pg-title">Ищу<br>работу</div><div class="pg-sub">Заказчики найдут вас после публикации</div></div>
         <div class="field"><span class="f-label">Специализации</span><div class="chips" id="job-specs"></div></div>
-        <div class="field"><span class="f-label">О себе и опыте</span><textarea id="job-exp" rows="5" maxlength="1000" placeholder="Опыт, проекты, навыки…" oninput="c(this,'jc');bp()"></textarea><div class="char-hint"><span id="jc">0</span> / 1000</div></div>
-        <div class="field"><span class="f-label">Ставка</span><div class="price-row"><input type="text" id="job-price" placeholder="От … или фиксированно" oninput="bp()"><div class="sel-w"><select id="job-curr" onchange="ct('job');bp()"><option>RUB</option><option>USD</option><option>Robux</option><option>KZT</option><option>Crypto</option></select></div></div><div id="job-cw" style="display:none;margin-top:8px"><input type="text" id="job-cn" placeholder="TON, USDT, BTC…" oninput="bp()"></div></div>
-        <div class="field"><span class="f-label">Портфолио</span><input type="url" id="job-port" placeholder="https://…" oninput="bp()"></div>
-        <div class="field"><span class="f-label">Контакт</span><input type="text" id="job-contact" placeholder="@username" oninput="bp()"></div>
+
+        <div class="field">
+          <span class="f-label">О себе и опыте</span>
+          <div class="fmt-toolbar">
+            <div class="fmt-btn" onclick="fmt('job-exp','**','**')">𝐁</div>
+            <div class="fmt-btn" onclick="fmt('job-exp','_','_')">𝐼</div>
+            <div class="fmt-btn" onclick="fmt('job-exp','`','`')">&lt;/&gt;</div>
+            <div class="fmt-btn" onclick="fmt('job-exp','||','||')">👁</div>
+          </div>
+          <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
+          <textarea id="job-exp" rows="5" maxlength="200" placeholder="Опыт, проекты, навыки…" oninput="c(this,'jc');bp()"></textarea>
+          <div class="char-hint"><span id="jc">0</span> / 200</div>
+        </div>
+
+        <div class="field">
+          <span class="f-label">Ставка</span>
+          <div class="price-row">
+            <input type="number" id="job-price" placeholder="От…" min="0" oninput="limitNum(this,10);bp()">
+            <div class="sel-w"><select id="job-curr" onchange="ct('job');bp()">
+              <option>RUB</option><option>USD</option><option>Robux</option><option>KZT</option><option>Crypto</option><option>%revenue</option>
+            </select></div>
+          </div>
+          <div id="job-cw" style="display:none;margin-top:8px"><input type="text" id="job-cn" placeholder="TON, USDT, BTC…" oninput="bp()"></div>
+          <div id="job-rev" style="display:none;margin-top:8px"><div class="note">% от дохода игры (роялти)</div></div>
+        </div>
+
+        <div class="field">
+          <span class="f-label">Портфолио</span>
+          <input type="url" id="job-port" placeholder="https://…" oninput="valUrl(this);bp()">
+          <div id="job-port-err" style="font-size:10px;color:#ff8080;margin-top:4px;display:none">Только ссылка (https://…)</div>
+        </div>
+
+        <div class="field">
+          <span class="f-label">Контакт</span>
+          <input type="text" id="job-contact" placeholder="@username или https://…" maxlength="15" oninput="valContact(this);bp()">
+          <div class="char-hint"><span id="job-cl">0</span> / 15</div>
+        </div>
+
+        <div class="field">
+          <span class="f-label">Изображение к объявлению</span>
+          <div class="upload-zone" onclick="triggerUpload('job-img-inp')" id="job-img-zone"
+            ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,'job-img-inp',true)">
+            <div class="uz-icon">🖼</div>
+            <div class="uz-txt">Нажмите или перетащите изображение</div>
+            <div class="uz-sub">JPG, PNG, WEBP · до 5 МБ</div>
+          </div>
+          <input type="file" id="job-img-inp" accept="image/jpeg,image/png,image/webp" onchange="handleFiles(this,'job-img-list',true)">
+          <div class="file-list" id="job-img-list"></div>
+        </div>
+
         <div class="preview" id="job-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="job-pb"></div><div class="preview-tags" id="job-pt"></div></div>
-        <div class="boost" id="job-boost"><div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div><div class="boost-opt" onclick="pb2(this,'job','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div><div class="boost-opt" onclick="pb2(this,'job','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div><div class="boost-opt active" onclick="pb2(this,'job','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div></div>
+        <div class="boost" id="job-boost">
+          <div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div>
+          <div class="boost-opt" onclick="pb2(this,'job','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div>
+          <div class="boost-opt" onclick="pb2(this,'job','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div>
+          <div class="boost-opt active" onclick="pb2(this,'job','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div>
+        </div>
         <button class="btn" onclick="send('find-job')">Отправить на модерацию</button>
       </div>
 
+      <!-- ══ ИЩУ КОМАНДУ ══ -->
       <div id="page-find-team" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Раздел — Команды</div><div class="pg-title">Ищу<br>команду</div><div class="pg-sub">Найдите партнёров для проекта</div></div>
         <div class="field"><span class="f-label">Кто вы в проекте</span><div class="chips" id="team-role"></div></div>
         <div class="field"><span class="f-label">Ищем специалистов</span><div class="chips" id="team-need"></div></div>
-        <div class="field"><span class="f-label">Описание проекта</span><textarea id="team-desc" rows="6" maxlength="1200" placeholder="Идея, механика, цели…" oninput="c(this,'tc');bp()"></textarea><div class="char-hint"><span id="tc">0</span> / 1200</div></div>
-        <div class="field"><span class="f-label">Условия</span><div class="sel-w"><select id="team-pay" onchange="bp()"><option value="">Выберите формат</option><option>Роялти — % от прибыли</option><option>Фиксированная оплата</option><option>Для портфолио / бесплатно</option><option>Обсуждается</option></select></div></div>
-        <div class="field"><span class="f-label">Контакт</span><input type="text" id="team-contact" placeholder="@username" oninput="bp()"></div>
+
+        <div class="field">
+          <span class="f-label">Описание проекта</span>
+          <div class="fmt-toolbar">
+            <div class="fmt-btn" onclick="fmt('team-desc','**','**')">𝐁</div>
+            <div class="fmt-btn" onclick="fmt('team-desc','_','_')">𝐼</div>
+            <div class="fmt-btn" onclick="fmt('team-desc','`','`')">&lt;/&gt;</div>
+            <div class="fmt-btn" onclick="fmt('team-desc','||','||')">👁</div>
+          </div>
+          <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
+          <textarea id="team-desc" rows="6" maxlength="200" placeholder="Идея, механика, цели…" oninput="c(this,'tc');bp()"></textarea>
+          <div class="char-hint"><span id="tc">0</span> / 200</div>
+        </div>
+
+        <div class="field"><span class="f-label">Условия</span><div class="sel-w"><select id="team-pay" onchange="bp()">
+          <option value="">Выберите формат</option>
+          <option>Роялти — % от прибыли</option>
+          <option>Фиксированная оплата</option>
+          <option>Для портфолио / бесплатно</option>
+          <option>Обсуждается</option>
+        </select></div></div>
+
+        <div class="field">
+          <span class="f-label">Контакт</span>
+          <input type="text" id="team-contact" placeholder="@username или https://…" maxlength="15" oninput="valContact(this);bp()">
+          <div class="char-hint"><span id="team-cl">0</span> / 15</div>
+        </div>
+
+        <div class="field">
+          <span class="f-label">Изображение к объявлению</span>
+          <div class="upload-zone" onclick="triggerUpload('team-img-inp')" id="team-img-zone"
+            ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,'team-img-inp',true)">
+            <div class="uz-icon">🖼</div>
+            <div class="uz-txt">Нажмите или перетащите изображение</div>
+            <div class="uz-sub">JPG, PNG, WEBP · до 5 МБ</div>
+          </div>
+          <input type="file" id="team-img-inp" accept="image/jpeg,image/png,image/webp" onchange="handleFiles(this,'team-img-list',true)">
+          <div class="file-list" id="team-img-list"></div>
+        </div>
+
         <div class="preview" id="team-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="team-pb"></div><div class="preview-tags" id="team-pt"></div></div>
-        <div class="boost" id="team-boost"><div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div><div class="boost-opt" onclick="pb2(this,'team','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div><div class="boost-opt" onclick="pb2(this,'team','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div><div class="boost-opt active" onclick="pb2(this,'team','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div></div>
+        <div class="boost" id="team-boost">
+          <div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div>
+          <div class="boost-opt" onclick="pb2(this,'team','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div>
+          <div class="boost-opt" onclick="pb2(this,'team','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div>
+          <div class="boost-opt active" onclick="pb2(this,'team','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div>
+        </div>
         <button class="btn" onclick="send('find-team')">Отправить на модерацию</button>
       </div>
 
+      <!-- ══ ГАЙДЫ ══ -->
       <div id="page-guides" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Раздел — База знаний</div><div class="pg-title">Написать<br>гайд</div><div class="pg-sub">После проверки появится в канале</div></div>
-        <div class="field"><span class="f-label">Заголовок</span><input type="text" id="g-title" maxlength="80" placeholder="Как создать…" oninput="c(this,'gt');bp()"><div class="char-hint"><span id="gt">0</span> / 80</div></div>
+
+        <div class="field">
+          <span class="f-label">Заголовок</span>
+          <input type="text" id="g-title" maxlength="80" placeholder="Как создать…" oninput="c(this,'gt');bp()">
+          <div class="char-hint"><span id="gt">0</span> / 80</div>
+        </div>
+
         <div class="field"><span class="f-label">Категория</span><div class="cat-chips" id="guide-cats"></div></div>
         <div class="field"><span class="f-label">Уровень</span><div class="sel-w"><select id="g-level"><option>Новичок</option><option>Средний</option><option>Продвинутый</option></select></div></div>
-        <div class="field"><span class="f-label">Текст гайда</span><textarea id="g-content" rows="11" maxlength="3000" placeholder="Шаги, объяснения, примеры…" oninput="c(this,'gc');bp()"></textarea><div class="char-hint"><span id="gc">0</span> / 3000</div></div>
+
+        <div class="field">
+          <span class="f-label">Текст гайда</span>
+          <div class="fmt-toolbar">
+            <div class="fmt-btn" onclick="fmt('g-content','**','**')">𝐁</div>
+            <div class="fmt-btn" onclick="fmt('g-content','_','_')">𝐼</div>
+            <div class="fmt-btn" onclick="fmt('g-content','`','`')">&lt;/&gt;</div>
+            <div class="fmt-btn" onclick="fmt('g-content','```\n','\n```')" title="Блок кода">⌥</div>
+            <div class="fmt-btn" onclick="fmt('g-content','||','||')">👁</div>
+          </div>
+          <div class="fmt-hint">**жирный** _курсив_ `код` ```блок``` ||спойлер||</div>
+          <textarea id="g-content" rows="11" maxlength="3000" placeholder="Шаги, объяснения, примеры…" oninput="c(this,'gc');bp()"></textarea>
+          <div class="char-hint"><span id="gc">0</span> / 3000</div>
+        </div>
+
+        <div class="field">
+          <span class="f-label">Прикрепить файлы к гайду</span>
+          <div class="upload-zone" onclick="triggerUpload('guide-file-inp')" id="guide-file-zone"
+            ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,'guide-file-inp',false)">
+            <div class="uz-icon">📎</div>
+            <div class="uz-txt">Нажмите или перетащите файлы</div>
+            <div class="uz-sub">Изображения, PDF, .rbxl, .lua · до 20 МБ · макс. 5 файлов</div>
+          </div>
+          <input type="file" id="guide-file-inp" multiple accept="image/*,.pdf,.rbxl,.lua,.txt" onchange="handleFiles(this,'guide-file-list',false)">
+          <div class="file-list" id="guide-file-list"></div>
+        </div>
+
         <div class="preview" id="guide-preview"><div class="preview-lbl">Превью гайда</div><div class="preview-body" id="guide-pb"></div><div class="preview-tags" id="guide-pt"></div></div>
-        <div class="boost" id="guide-boost"><div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div><div class="boost-opt" onclick="pb2(this,'guide','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div><div class="boost-opt" onclick="pb2(this,'guide','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Гайд остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div><div class="boost-opt active" onclick="pb2(this,'guide','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div></div>
+        <div class="boost" id="guide-boost">
+          <div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div>
+          <div class="boost-opt" onclick="pb2(this,'guide','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div>
+          <div class="boost-opt" onclick="pb2(this,'guide','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Гайд остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div>
+          <div class="boost-opt active" onclick="pb2(this,'guide','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div>
+        </div>
         <button class="btn" onclick="send('guides')">Отправить на модерацию</button>
       </div>
 
+      <!-- ══ ПОДДЕРЖКА ══ -->
       <div id="page-support" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Служебный раздел</div><div class="pg-title">Поддержка</div></div>
         <div class="note">Ответим в чате бота. Повторный запрос — не раньше чем через 2 часа.</div>
@@ -225,37 +429,134 @@ textarea { resize: none; line-height: 1.65; }
 </div>
 
 <script>
-// ── Toast уведомления ─────────────────────────────────────────
+// ── Toast ─────────────────────────────────────────────────────
 function toast(msg, type='err', ms=3000) {
   const wrap = document.getElementById('toast-wrap');
   const el = document.createElement('div');
   el.className = 'toast ' + type;
   el.textContent = msg;
   wrap.appendChild(el);
-  setTimeout(() => {
-    el.style.animation = 'toast-out .22s ease forwards';
-    setTimeout(() => el.remove(), 220);
-  }, ms);
+  setTimeout(() => { el.style.animation = 'toast-out .22s ease forwards'; setTimeout(() => el.remove(), 220); }, ms);
 }
 
-// ── Telegram WebApp init ───────────────────────────────────────
+// ── Telegram ──────────────────────────────────────────────────
 const tg = (typeof Telegram !== 'undefined' && Telegram.WebApp) ? Telegram.WebApp : {
   expand: () => {}, ready: () => {}, initDataUnsafe: { user: { id: 0 } }, showAlert: m => alert(m), close: () => {}
 };
-tg.expand();
-tg.ready();
-// Разрешаем вертикальный свайп только если не скроллим
+tg.expand(); tg.ready();
 if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
 
-// ── API ────────────────────────────────────────────────────────
 const API_URL = "https://freelanceroblox.py0drama.workers.dev/";
 
 // ── Данные ────────────────────────────────────────────────────
-const SPECS  = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Тестер'];
-const ROLES  = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Менеджер'];
-const GCATS  = ['Скриптинг','Билдинг','Интерфейсы','VFX','Анимация','Оптимизация','Другое'];
+const SPECS = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Тестер'];
+const ROLES = ['Скриптер','Билдер','Моделер','UI/UX','VFX','GFX','Аниматор','Геймдиз.','Менеджер'];
+const GCATS = ['Скриптинг','Билдинг','Интерфейсы','VFX','Анимация','Оптимизация','Другое'];
 const S = { execSpecs:[], jobSpecs:[], teamRole:[], teamNeed:[], guideCat:null, boosts:{exec:'none',job:'none',team:'none',guide:'none'} };
+
+// Хранилище файлов: {inputId: [{name, size, file}]}
+const FILES = {};
 let cur = 'find-exec';
+
+// ── Форматирование текста ─────────────────────────────────────
+function fmt(textareaId, before, after) {
+  const ta = document.getElementById(textareaId);
+  if (!ta) return;
+  const s = ta.selectionStart, e = ta.selectionEnd;
+  const selected = ta.value.substring(s, e);
+  const replacement = before + (selected || 'текст') + after;
+  ta.value = ta.value.substring(0, s) + replacement + ta.value.substring(e);
+  const newPos = selected ? s + replacement.length : s + before.length + 4;
+  ta.selectionStart = selected ? s + before.length : s + before.length;
+  ta.selectionEnd = selected ? e + before.length + after.length : s + before.length + 4;
+  ta.focus();
+  // Обновить счётчик
+  const counterMap = {'exec-desc':'ec','job-exp':'jc','team-desc':'tc','g-content':'gc'};
+  const cid = counterMap[textareaId];
+  if (cid) { const cel = document.getElementById(cid); if(cel) cel.textContent = ta.value.length; }
+  bp();
+}
+
+// ── Файлы ─────────────────────────────────────────────────────
+function triggerUpload(id) { document.getElementById(id)?.click(); }
+
+function handleFiles(input, listId, imgOnly) {
+  const iid = input.id;
+  if (!FILES[iid]) FILES[iid] = [];
+  const maxFiles = imgOnly ? 1 : 5;
+  const maxSize = imgOnly ? 5 * 1024 * 1024 : 20 * 1024 * 1024;
+  Array.from(input.files).forEach(f => {
+    if (FILES[iid].length >= maxFiles) { toast(`Максимум ${maxFiles} ${imgOnly ? 'изображение' : 'файлов'}`); return; }
+    if (f.size > maxSize) { toast(`Файл слишком большой: ${f.name}`); return; }
+    if (FILES[iid].some(x => x.name === f.name)) return;
+    FILES[iid].push({ name: f.name, size: f.size, file: f });
+  });
+  input.value = '';
+  renderFileList(iid, listId);
+}
+
+function renderFileList(iid, listId) {
+  const list = document.getElementById(listId); if (!list) return;
+  list.innerHTML = '';
+  (FILES[iid] || []).forEach((f, i) => {
+    const d = document.createElement('div'); d.className = 'file-item';
+    const isImg = f.file.type.startsWith('image/');
+    d.innerHTML = `<span class="fi-name">${isImg ? '🖼 ' : '📄 '}${f.name}</span><span class="fi-size">${fmtSize(f.size)}</span><span class="fi-rm" onclick="removeFile('${iid}','${listId}',${i})">✕</span>`;
+    list.appendChild(d);
+  });
+}
+
+function removeFile(iid, listId, idx) {
+  if (FILES[iid]) { FILES[iid].splice(idx, 1); renderFileList(iid, listId); }
+}
+
+function fmtSize(b) {
+  if (b < 1024) return b + ' Б';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' КБ';
+  return (b/1048576).toFixed(1) + ' МБ';
+}
+
+function dragOver(e, zone) { e.preventDefault(); zone.classList.add('drag'); }
+function dragLeave(zone) { zone.classList.remove('drag'); }
+function dropFile(e, inputId, imgOnly) {
+  e.preventDefault();
+  const zone = e.currentTarget; zone.classList.remove('drag');
+  const input = document.getElementById(inputId); if (!input) return;
+  const dt = e.dataTransfer;
+  const listId = inputId.replace('-inp', '-list');
+  const fakeInput = { id: inputId, files: dt.files, value: '' };
+  handleFiles(fakeInput, listId, imgOnly);
+}
+
+// ── Валидация контакта ────────────────────────────────────────
+function valContact(inp) {
+  const v = inp.value;
+  const cl = document.getElementById(inp.id.replace('-contact','-cl') + '') || 
+             document.getElementById(inp.id === 'exec-contact' ? 'exec-cl' : inp.id === 'job-contact' ? 'job-cl' : 'team-cl');
+  if (cl) cl.textContent = v.length;
+  // Разрешаем @username или https://
+  const ok = /^@[a-zA-Z0-9_]{0,14}$/.test(v) || /^https?:\/\/.+/.test(v) || v === '';
+  inp.classList.toggle('invalid', !ok && v.length > 0);
+}
+
+// ── Валидация URL ─────────────────────────────────────────────
+function valUrl(inp) {
+  const v = inp.value.trim();
+  const errId = inp.id + '-err';
+  const err = document.getElementById(errId);
+  const ok = v === '' || /^https?:\/\/.+/.test(v);
+  if (err) err.style.display = ok ? 'none' : 'block';
+  inp.classList.toggle('invalid', !ok);
+}
+
+// ── Лимит числа ───────────────────────────────────────────────
+function limitNum(inp, maxLen) {
+  // Только целые положительные числа, максимум maxLen символов
+  let v = inp.value.replace(/[^0-9]/g, '');
+  if (v.length > maxLen) v = v.substring(0, maxLen);
+  if (v.startsWith('0') && v.length > 1) v = v.replace(/^0+/, '') || '0';
+  inp.value = v;
+}
 
 // ── Чипы ──────────────────────────────────────────────────────
 function mkC(id, arr, key, cb) {
@@ -286,7 +587,6 @@ function goNav(id, el) {
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   const pg = document.getElementById('page-'+id); if(pg) pg.classList.add('active');
   if(el) el.classList.add('active');
-  // Скролл наверх при смене вкладки
   document.querySelector('.scroll-area').scrollTop = 0;
   cur = id; bp();
 }
@@ -298,9 +598,13 @@ function toggleMenu() {
 // ── Вспомогательные ───────────────────────────────────────────
 function sb(sec) { const el=document.getElementById(sec+'-boost'); if(el) el.classList.add('show'); }
 function pb2(el, sec, type) { el.closest('.boost').querySelectorAll('.boost-opt').forEach(x=>x.classList.remove('active')); el.classList.add('active'); S.boosts[sec]=type; }
-function ct(p) { const cu=document.getElementById(p+'-curr'),w=document.getElementById(p+'-cw'); if(cu&&w) w.style.display=cu.value==='Crypto'?'block':'none'; }
+function ct(p) {
+  const cu=document.getElementById(p+'-curr'), w=document.getElementById(p+'-cw'), rv=document.getElementById(p+'-rev');
+  if(cu&&w) w.style.display=cu.value==='Crypto'?'block':'none';
+  if(cu&&rv) rv.style.display=cu.value==='%revenue'?'block':'none';
+}
 function c(el, id) { const x=document.getElementById(id); if(x) x.textContent=el.value.length; }
-function v(id) { const el=document.getElementById(id); return el?el.value.trim():''; }
+function vv(id) { const el=document.getElementById(id); return el?el.value.trim():''; }
 function tag(s) { return '#'+s.toLowerCase().replace(/[^a-zа-яёЁ0-9]/gi,''); }
 function setp(id, body, tags) {
   const card=document.getElementById(id+'-preview'), pb=document.getElementById(id+'-pb'), pt=document.getElementById(id+'-pt');
@@ -313,18 +617,39 @@ function setp(id, body, tags) {
 
 // ── Превью ────────────────────────────────────────────────────
 function bp() {
-  if(cur==='find-exec'){const sp=S.execSpecs,desc=v('exec-desc'),price=v('exec-price'),curr=v('exec-curr'),con=v('exec-contact');if(!sp.length&&!desc){document.getElementById('exec-preview').classList.remove('show');return;}let t='ИЩЕМ ИСПОЛНИТЕЛЯ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(desc)t+='\n\n'+desc;if(price)t+='\n\nОплата: '+price+' '+(curr==='Crypto'?(v('exec-cn')||'Crypto'):curr);if(con)t+='\nКонтакт: '+con;setp('exec',t,['#ищу_исполнителя','#фриланс_roblox',...sp.map(tag)]);sb('exec');}
-  else if(cur==='find-job'){const sp=S.jobSpecs,exp=v('job-exp'),price=v('job-price'),curr=v('job-curr'),port=v('job-port'),con=v('job-contact');if(!sp.length&&!exp){document.getElementById('job-preview').classList.remove('show');return;}let t='ИЩУ РАБОТУ / ЗАКАЗЫ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(exp)t+='\n\n'+exp;if(price)t+='\n\nСтавка: от '+price+' '+(curr==='Crypto'?(v('job-cn')||'Crypto'):curr);if(port)t+='\nПортфолио: '+port;if(con)t+='\nКонтакт: '+con;setp('job',t,['#ищу_работу','#фриланс_roblox',...sp.map(tag)]);sb('job');}
-  else if(cur==='find-team'){const roles=S.teamRole,need=S.teamNeed,desc=v('team-desc'),pay=v('team-pay'),con=v('team-contact');if(!roles.length&&!desc){document.getElementById('team-preview').classList.remove('show');return;}let t='ИЩЕМ КОМАНДУ\n';if(roles.length)t+='\nЯ: '+roles.join(', ');if(need.length)t+='\nИщем: '+need.join(', ');if(desc)t+='\n\n'+desc;if(pay)t+='\n\nУсловия: '+pay;if(con)t+='\nКонтакт: '+con;setp('team',t,['#ищу_команду','#roblox_team',...need.map(tag)]);sb('team');}
-  else if(cur==='guides'){const title=v('g-title'),content=v('g-content'),cat=S.guideCat,level=v('g-level');if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}let t='ГАЙД\n';if(title)t+='\n'+title;if(cat)t+='\nКатегория: '+cat;if(level)t+='\nУровень: '+level;if(content)t+='\n\n'+content.substring(0,300)+(content.length>300?'...':'');setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));sb('guide');}
+  if(cur==='find-exec'){const sp=S.execSpecs,desc=vv('exec-desc'),price=vv('exec-price'),curr=vv('exec-curr'),con=vv('exec-contact');if(!sp.length&&!desc){document.getElementById('exec-preview').classList.remove('show');return;}let t='ИЩЕМ ИСПОЛНИТЕЛЯ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(desc)t+='\n\n'+desc;if(price)t+='\n\nОплата: '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('exec-cn')||'Crypto'):curr));if(con)t+='\nКонтакт: '+con;setp('exec',t,['#ищу_исполнителя','#фриланс_roblox',...sp.map(tag)]);sb('exec');}
+  else if(cur==='find-job'){const sp=S.jobSpecs,exp=vv('job-exp'),price=vv('job-price'),curr=vv('job-curr'),port=vv('job-port'),con=vv('job-contact');if(!sp.length&&!exp){document.getElementById('job-preview').classList.remove('show');return;}let t='ИЩУ РАБОТУ / ЗАКАЗЫ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(exp)t+='\n\n'+exp;if(price)t+='\n\nСтавка: от '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('job-cn')||'Crypto'):curr));if(port)t+='\nПортфолио: '+port;if(con)t+='\nКонтакт: '+con;setp('job',t,['#ищу_работу','#фриланс_roblox',...sp.map(tag)]);sb('job');}
+  else if(cur==='find-team'){const roles=S.teamRole,need=S.teamNeed,desc=vv('team-desc'),pay=vv('team-pay'),con=vv('team-contact');if(!roles.length&&!desc){document.getElementById('team-preview').classList.remove('show');return;}let t='ИЩЕМ КОМАНДУ\n';if(roles.length)t+='\nЯ: '+roles.join(', ');if(need.length)t+='\nИщем: '+need.join(', ');if(desc)t+='\n\n'+desc;if(pay)t+='\n\nУсловия: '+pay;if(con)t+='\nКонтакт: '+con;setp('team',t,['#ищу_команду','#roblox_team',...need.map(tag)]);sb('team');}
+  else if(cur==='guides'){const title=vv('g-title'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level');if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}let t='ГАЙД\n';if(title)t+='\n'+title;if(cat)t+='\nКатегория: '+cat;if(level)t+='\nУровень: '+level;if(content)t+='\n\n'+content.substring(0,300)+(content.length>300?'...':'');setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));sb('guide');}
 }
 
 // ── Валидация ─────────────────────────────────────────────────
 function validate(type) {
-  if(type==='find-exec'){if(!S.execSpecs.length&&!v('exec-desc'))return'Выберите специализации или опишите задачу';if(!v('exec-contact'))return'Укажите контакт';}
-  if(type==='find-job'){if(!S.jobSpecs.length&&!v('job-exp'))return'Выберите специализации или расскажите о себе';if(!v('job-contact'))return'Укажите контакт';}
-  if(type==='find-team'){if(!v('team-desc'))return'Опишите проект';if(!v('team-contact'))return'Укажите контакт';}
-  if(type==='guides'){if(!v('g-title'))return'Введите заголовок';if(!S.guideCat)return'Выберите категорию';if(!v('g-content'))return'Напишите текст гайда';}
+  if(type==='find-exec'){
+    if(!S.execSpecs.length&&!vv('exec-desc')) return 'Выберите специализации или опишите задачу';
+    if(!vv('exec-contact')) return 'Укажите контакт';
+    const con = vv('exec-contact');
+    if(!/^@[a-zA-Z0-9_]{1,14}$/.test(con) && !/^https?:\/\/.+/.test(con)) return 'Контакт: @username или https://…';
+  }
+  if(type==='find-job'){
+    if(!S.jobSpecs.length&&!vv('job-exp')) return 'Выберите специализации или расскажите о себе';
+    if(!vv('job-contact')) return 'Укажите контакт';
+    const con = vv('job-contact');
+    if(!/^@[a-zA-Z0-9_]{1,14}$/.test(con) && !/^https?:\/\/.+/.test(con)) return 'Контакт: @username или https://…';
+    const port = vv('job-port');
+    if(port && !/^https?:\/\/.+/.test(port)) return 'Портфолио: только ссылка https://…';
+  }
+  if(type==='find-team'){
+    if(!vv('team-desc')) return 'Опишите проект';
+    if(!vv('team-contact')) return 'Укажите контакт';
+    const con = vv('team-contact');
+    if(!/^@[a-zA-Z0-9_]{1,14}$/.test(con) && !/^https?:\/\/.+/.test(con)) return 'Контакт: @username или https://…';
+  }
+  if(type==='guides'){
+    if(!vv('g-title')) return 'Введите заголовок';
+    if(!S.guideCat) return 'Выберите категорию';
+    if(!vv('g-content')) return 'Напишите текст гайда';
+  }
   return null;
 }
 
@@ -333,28 +658,70 @@ function buildP(type) {
   const uid = tg.initDataUnsafe?.user?.id || 0;
   const bk = type==='find-exec'?'exec':type==='find-job'?'job':type==='find-team'?'team':'guide';
   const p = { user_id: uid, type, boost: S.boosts[bk] };
-  if(type==='find-exec'){p.specs=S.execSpecs;p.description=v('exec-desc');p.price=v('exec-price');p.currency=v('exec-curr');if(p.currency==='Crypto')p.crypto_name=v('exec-cn');p.contact=v('exec-contact');p.hashtags=['#ищу_исполнителя','#фриланс_roblox',...S.execSpecs.map(tag)];}
-  else if(type==='find-job'){p.specs=S.jobSpecs;p.experience=v('job-exp');p.price=v('job-price');p.currency=v('job-curr');if(p.currency==='Crypto')p.crypto_name=v('job-cn');p.portfolio=v('job-port');p.contact=v('job-contact');p.hashtags=['#ищу_работу','#фриланс_roblox',...S.jobSpecs.map(tag)];}
-  else if(type==='find-team'){p.my_role=S.teamRole;p.need=S.teamNeed;p.description=v('team-desc');p.payment=v('team-pay');p.contact=v('team-contact');p.hashtags=['#ищу_команду','#roblox_team',...S.teamNeed.map(tag)];}
-  else if(type==='guides'){p.title=v('g-title');p.category=S.guideCat;p.level=v('g-level');p.content=v('g-content');p.hashtags=['#гайд_roblox',...(S.guideCat?[tag(S.guideCat)]:[])].filter(Boolean);}
+  if(type==='find-exec'){
+    p.specs=S.execSpecs;p.description=vv('exec-desc');
+    p.price=vv('exec-price');p.currency=vv('exec-curr');
+    if(p.currency==='Crypto') p.crypto_name=vv('exec-cn');
+    p.contact=vv('exec-contact');
+    p.hashtags=['#ищу_исполнителя','#фриланс_roblox',...S.execSpecs.map(tag)];
+  } else if(type==='find-job'){
+    p.specs=S.jobSpecs;p.experience=vv('job-exp');
+    p.price=vv('job-price');p.currency=vv('job-curr');
+    if(p.currency==='Crypto') p.crypto_name=vv('job-cn');
+    p.portfolio=vv('job-port');p.contact=vv('job-contact');
+    p.hashtags=['#ищу_работу','#фриланс_roblox',...S.jobSpecs.map(tag)];
+  } else if(type==='find-team'){
+    p.my_role=S.teamRole;p.need=S.teamNeed;
+    p.description=vv('team-desc');p.payment=vv('team-pay');p.contact=vv('team-contact');
+    p.hashtags=['#ищу_команду','#roblox_team',...S.teamNeed.map(tag)];
+  } else if(type==='guides'){
+    p.title=vv('g-title');p.category=S.guideCat;p.level=vv('g-level');p.content=vv('g-content');
+    p.hashtags=['#гайд_roblox',...(S.guideCat?[tag(S.guideCat)]:[])].filter(Boolean);
+  }
   return p;
 }
 
-// ── Отправка ──────────────────────────────────────────────────
+// ── Отправка с файлами ────────────────────────────────────────
 function send(type) {
   const err = validate(type); if(err){ toast(err); return; }
   const bk = type==='find-exec'?'exec':type==='find-job'?'job':type==='find-team'?'team':'guide';
   const boost = S.boosts[bk];
   if(boost==='bump'||boost==='pin'){ const stars=boost==='bump'?25:75; if(!confirm(`Оплатить ${stars} Stars?`)) return; }
-  doFetch(buildP(type), type);
+
+  // Собираем файлы
+  const imgMap = {'find-exec':'exec-img-inp','find-job':'job-img-inp','find-team':'team-img-inp','guides':'guide-file-inp'};
+  const fid = imgMap[type];
+  const attachedFiles = FILES[fid] || [];
+
+  const payload = buildP(type);
+
+  if (attachedFiles.length > 0) {
+    // Отправляем через FormData
+    const fd = new FormData();
+    fd.append('data', JSON.stringify(payload));
+    attachedFiles.forEach((f, i) => fd.append(`file_${i}`, f.file, f.name));
+    doFetchForm(fd, type);
+  } else {
+    doFetch(payload, type);
+  }
 }
+
 function sendSup() {
   const txt = document.getElementById('s-txt')?.value.trim(); if(!txt){ toast('Опишите проблему'); return; }
   doFetch({ user_id: tg.initDataUnsafe?.user?.id||0, type:'support_request', text:txt }, 'support');
 }
+
 function doFetch(data, type) {
   document.querySelectorAll('.btn').forEach(b=>b.disabled=true);
   fetch(API_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) })
+    .then(r=>r.json())
+    .then(res=>{ document.querySelectorAll('.btn').forEach(b=>b.disabled=false); if(res.status==='limit') toast(res.message||'Лимит. Попробуйте позже.'); else showSuc(type); })
+    .catch(e=>{ document.querySelectorAll('.btn').forEach(b=>b.disabled=false); toast('Ошибка: '+e.message); });
+}
+
+function doFetchForm(fd, type) {
+  document.querySelectorAll('.btn').forEach(b=>b.disabled=true);
+  fetch(API_URL, { method:'POST', body: fd })
     .then(r=>r.json())
     .then(res=>{ document.querySelectorAll('.btn').forEach(b=>b.disabled=false); if(res.status==='limit') toast(res.message||'Лимит. Попробуйте позже.'); else showSuc(type); })
     .catch(e=>{ document.querySelectorAll('.btn').forEach(b=>b.disabled=false); toast('Ошибка: '+e.message); });
