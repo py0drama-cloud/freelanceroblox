@@ -250,12 +250,6 @@ input[type=file] { display: none; }
         </div>
 
         <div class="preview" id="exec-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="exec-pb"></div><div class="preview-tags" id="exec-pt"></div></div>
-        <div class="boost" id="exec-boost">
-          <div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div>
-          <div class="boost-opt" onclick="pb2(this,'exec','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div>
-          <div class="boost-opt" onclick="pb2(this,'exec','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div>
-          <div class="boost-opt active" onclick="pb2(this,'exec','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div>
-        </div>
         <button class="btn" onclick="send('find-exec')">Отправить на модерацию</button>
       </div>
 
@@ -314,12 +308,6 @@ input[type=file] { display: none; }
         </div>
 
         <div class="preview" id="job-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="job-pb"></div><div class="preview-tags" id="job-pt"></div></div>
-        <div class="boost" id="job-boost">
-          <div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div>
-          <div class="boost-opt" onclick="pb2(this,'job','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div>
-          <div class="boost-opt" onclick="pb2(this,'job','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div>
-          <div class="boost-opt active" onclick="pb2(this,'job','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div>
-        </div>
         <button class="btn" onclick="send('find-job')">Отправить на модерацию</button>
       </div>
 
@@ -369,12 +357,6 @@ input[type=file] { display: none; }
         </div>
 
         <div class="preview" id="team-preview"><div class="preview-lbl">Превью поста</div><div class="preview-body" id="team-pb"></div><div class="preview-tags" id="team-pt"></div></div>
-        <div class="boost" id="team-boost">
-          <div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div>
-          <div class="boost-opt" onclick="pb2(this,'team','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div>
-          <div class="boost-opt" onclick="pb2(this,'team','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Пост остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div>
-          <div class="boost-opt active" onclick="pb2(this,'team','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div>
-        </div>
         <button class="btn" onclick="send('find-team')">Отправить на модерацию</button>
       </div>
 
@@ -418,12 +400,6 @@ input[type=file] { display: none; }
         </div>
 
         <div class="preview" id="guide-preview"><div class="preview-lbl">Превью гайда</div><div class="preview-body" id="guide-pb"></div><div class="preview-tags" id="guide-pt"></div></div>
-        <div class="boost" id="guide-boost">
-          <div class="boost-hdr"><span class="boost-ttl">Продвижение</span><span class="boost-sub">Telegram Stars</span></div>
-          <div class="boost-opt" onclick="pb2(this,'guide','bump')"><div><div class="bo-name">Поднять в топ</div><div class="bo-desc">Разовое поднятие на вершину ленты</div></div><span class="bo-price">★ 25</span></div>
-          <div class="boost-opt" onclick="pb2(this,'guide','pin')"><div><div class="bo-name">Закрепить на 24 ч</div><div class="bo-desc">Гайд остаётся в топе сутки</div></div><span class="bo-price">★ 75</span></div>
-          <div class="boost-opt active" onclick="pb2(this,'guide','none')"><div><div class="bo-name">Без продвижения</div><div class="bo-desc">Стандартная публикация</div></div><span class="bo-price free">Бесплатно</span></div>
-        </div>
         <button class="btn" onclick="send('guides')">Отправить на модерацию</button>
       </div>
 
@@ -668,8 +644,7 @@ function validate(type) {
 
 function buildP(type) {
   const uid = tg.initDataUnsafe?.user?.id || 0;
-  const bk = type==='find-exec'?'exec':type==='find-job'?'job':type==='find-team'?'team':'guide';
-  const p = { user_id: uid, type, boost: S.boosts[bk] };
+  const p = { user_id: uid, type, boost: 'none' };
   if(type==='find-exec'){
     p.specs=S.execSpecs;p.description=vv('exec-desc');
     p.price=vv('exec-price');p.currency=vv('exec-curr');
@@ -695,9 +670,6 @@ function buildP(type) {
 
 function send(type) {
   const err = validate(type); if(err){ toast(err); return; }
-  const bk = type==='find-exec'?'exec':type==='find-job'?'job':type==='find-team'?'team':'guide';
-  const boost = S.boosts[bk];
-  if(boost==='bump'||boost==='pin'){ const stars=boost==='bump'?25:75; if(!confirm(`Оплатить ${stars} Stars?`)) return; }
 
   // Собираем файлы
   const imgMap = {'find-exec':'exec-img-inp','find-job':'job-img-inp','find-team':'team-img-inp','guides':'guide-file-inp'};
