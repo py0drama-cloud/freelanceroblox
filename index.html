@@ -800,7 +800,7 @@ function renderPost(p) {
   if (desc.length > 120) desc = desc.substring(0, 120) + '…';
 
   const isAccepted = p.status === 'accepted';
-  const hasBoosted = p.boosted_until && new Date(p.boosted_until) > new Date();
+  const hasBoosted = p.boosted_until && new Date(p.boosted_until.endsWith("Z") ? p.boosted_until : p.boosted_until + "Z") > new Date();
   const boostLabel = hasBoosted ? '⭐ Буст активен' : '🚀 Поднять в топ · 25★';
 
   card.innerHTML = `
