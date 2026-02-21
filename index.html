@@ -101,14 +101,10 @@ textarea { resize: none; line-height: 1.65; }
 .preview-body { font-size: 12px; line-height: 1.75; color: var(--text-mid); white-space: pre-wrap; word-break: break-word; }
 .preview-tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
 .ptag { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); padding: 3px 9px; border-radius: 20px; font-family: monospace; }
-
-
 .fmt-toolbar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
 .fmt-btn { padding: 6px 12px; border-radius: 8px; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid var(--glass-border); color: var(--text-mid); font-size: 12px; font-weight: 700; cursor: pointer; transition: all .15s; user-select: none; font-family: 'Manrope', sans-serif; }
 .fmt-btn:active { background: rgba(255,255,255,0.1); color: #fff; transform: scale(.93); }
 .fmt-hint { font-size: 10px; color: var(--text-dim); margin-bottom: 8px; font-family: monospace; }
-
-
 .upload-zone { border: 1px dashed rgba(255,255,255,0.14); border-radius: var(--r-sm); padding: 20px 16px; text-align: center; cursor: pointer; transition: border-color .18s, background .18s; background: rgba(255,255,255,0.02); }
 .upload-zone:hover, .upload-zone.drag { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
 .upload-zone .uz-icon { font-size: 22px; margin-bottom: 6px; opacity: 0.5; }
@@ -121,7 +117,6 @@ input[type=file] { display: none; }
 .fi-size { font-size: 10px; color: var(--text-dim); margin: 0 10px; flex-shrink: 0; font-family: monospace; }
 .fi-rm { font-size: 14px; color: rgba(255,80,80,0.6); cursor: pointer; flex-shrink: 0; padding: 2px 4px; line-height: 1; }
 .fi-rm:active { color: rgba(255,80,80,0.9); }
-
 .boost { display: none; margin-bottom: 22px; }
 .boost.show { display: block; animation: fadeup .22s ease; }
 .boost-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -152,8 +147,6 @@ input[type=file] { display: none; }
 .toast.ok  { border-color: rgba(80,255,160,0.2); color: #80ffb0; }
 @keyframes toast-in { from { opacity:0; transform:translateY(-10px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
 @keyframes toast-out { from { opacity:1; } to { opacity:0; transform:translateY(-6px); } }
-
-
 .my-post-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--r); padding: 16px; margin-bottom: 12px; transition: border-color .16s; }
 .my-post-card:active { border-color: var(--glass-border-h); }
 .mpc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
@@ -171,7 +164,6 @@ input[type=file] { display: none; }
 .posts-empty { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 13px; }
 .posts-empty .pe-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.4; }
 .posts-loading { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; }
-
 .boost-toggle { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; margin-bottom: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid var(--glass-border); border-radius: var(--r-sm); cursor: pointer; transition: all .16s; user-select: none; }
 .boost-toggle.on { border-color: rgba(255,200,50,0.35); background: linear-gradient(135deg, rgba(255,200,50,0.08) 0%, rgba(255,200,50,0.02) 100%); }
 .boost-toggle:active { transform: scale(.99); }
@@ -224,8 +216,8 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('exec-desc','||','||')" title="Спойлер">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
-          <textarea id="exec-desc" rows="5" maxlength="200" placeholder="Что нужно сделать, сроки, детали…" oninput="c(this,'ec');bp()"></textarea>
-          <div class="char-hint"><span id="ec">0</span> / 200</div>
+          <textarea id="exec-desc" rows="5" maxlength="400" placeholder="Что нужно сделать, сроки, детали…" oninput="c(this,'ec');bp()"></textarea>
+          <div class="char-hint"><span id="ec">0</span> / 400</div>
         </div>
 
         <div class="field">
@@ -242,8 +234,8 @@ input[type=file] { display: none; }
 
         <div class="field">
           <span class="f-label">Контакт</span>
-          <input type="text" id="exec-contact" placeholder="@username или https://…" maxlength="15" oninput="valContact(this);bp()">
-          <div class="char-hint"><span id="exec-cl">0</span> / 15</div>
+          <input type="text" id="exec-contact" placeholder="@username или https://…" maxlength="30" oninput="valContact(this);bp()">
+          <div class="char-hint"><span id="exec-cl">0</span> / 30</div>
         </div>
 
         <div class="field">
@@ -283,8 +275,8 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('job-exp','||','||')">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
-          <textarea id="job-exp" rows="5" maxlength="200" placeholder="Опыт, проекты, навыки…" oninput="c(this,'jc');bp()"></textarea>
-          <div class="char-hint"><span id="jc">0</span> / 200</div>
+          <textarea id="job-exp" rows="5" maxlength="400" placeholder="Опыт, проекты, навыки…" oninput="c(this,'jc');bp()"></textarea>
+          <div class="char-hint"><span id="jc">0</span> / 400</div>
         </div>
 
         <div class="field">
@@ -307,8 +299,8 @@ input[type=file] { display: none; }
 
         <div class="field">
           <span class="f-label">Контакт</span>
-          <input type="text" id="job-contact" placeholder="@username или https://…" maxlength="15" oninput="valContact(this);bp()">
-          <div class="char-hint"><span id="job-cl">0</span> / 15</div>
+          <input type="text" id="job-contact" placeholder="@username или https://…" maxlength="30" oninput="valContact(this);bp()">
+          <div class="char-hint"><span id="job-cl">0</span> / 30</div>
         </div>
 
         <div class="field">
@@ -349,8 +341,8 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('team-desc','||','||')">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
-          <textarea id="team-desc" rows="6" maxlength="200" placeholder="Идея, механика, цели…" oninput="c(this,'tc');bp()"></textarea>
-          <div class="char-hint"><span id="tc">0</span> / 200</div>
+          <textarea id="team-desc" rows="6" maxlength="400" placeholder="Идея, механика, цели…" oninput="c(this,'tc');bp()"></textarea>
+          <div class="char-hint"><span id="tc">0</span> / 400</div>
         </div>
 
         <div class="field"><span class="f-label">Условия</span><div class="sel-w"><select id="team-pay" onchange="bp()">
@@ -363,8 +355,8 @@ input[type=file] { display: none; }
 
         <div class="field">
           <span class="f-label">Контакт</span>
-          <input type="text" id="team-contact" placeholder="@username или https://…" maxlength="15" oninput="valContact(this);bp()">
-          <div class="char-hint"><span id="team-cl">0</span> / 15</div>
+          <input type="text" id="team-contact" placeholder="@username или https://…" maxlength="30" oninput="valContact(this);bp()">
+          <div class="char-hint"><span id="team-cl">0</span> / 30</div>
         </div>
 
         <div class="field">
@@ -413,8 +405,8 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('g-content','||','||')">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ```блок``` ||спойлер||</div>
-          <textarea id="g-content" rows="11" maxlength="3000" placeholder="Шаги, объяснения, примеры…" oninput="c(this,'gc');bp()"></textarea>
-          <div class="char-hint"><span id="gc">0</span> / 3000</div>
+          <textarea id="g-content" rows="11" maxlength="400" placeholder="Шаги, объяснения, примеры…" oninput="c(this,'gc');bp()"></textarea>
+          <div class="char-hint"><span id="gc">0</span> / 400</div>
         </div>
 
         <div class="field">
@@ -440,13 +432,13 @@ input[type=file] { display: none; }
         <button class="btn" onclick="send('guides')">Отправить на модерацию</button>
       </div>
 
-      <!-- ══ ПОДДЕРЖКА ══ -->
-
+      <!-- ══ МОИ ПОСТЫ ══ -->
       <div id="page-my-posts" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Личный кабинет</div><div class="pg-title">Мои<br>посты</div><div class="pg-sub">Ваши объявления и гайды</div></div>
         <div id="my-posts-list"><div class="posts-loading">Загрузка…</div></div>
       </div>
 
+      <!-- ══ ПОДДЕРЖКА ══ -->
       <div id="page-support" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Служебный раздел</div><div class="pg-title">Поддержка</div></div>
         <div class="note">Ответим в чате бота. Повторный запрос — не раньше чем через 2 часа.</div>
@@ -484,7 +476,6 @@ if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
 
 const API_URL = "https://freelanceroblox.py0drama.workers.dev/";
 
-
 const BOOST_STATE = { exec: false, job: false, team: false, guide: false };
 
 function toggleBoost(sec) {
@@ -511,20 +502,25 @@ const ROLES = ['Скриптер','Билдер','Моделер','UI/UX','VFX',
 const GCATS = ['Скриптинг','Билдинг','Интерфейсы','VFX','Анимация','Оптимизация','Другое'];
 const S = { execSpecs:[], jobSpecs:[], teamRole:[], teamNeed:[], guideCat:null, boosts:{exec:'none',job:'none',team:'none',guide:'none'} };
 
-// Хранилище файлов: {inputId: [{name, size, file}]}
 const FILES = {};
 let cur = 'find-exec';
 
+// ── fmt(): вставляет форматирование и соблюдает maxlength ──
 function fmt(textareaId, before, after) {
   const ta = document.getElementById(textareaId);
   if (!ta) return;
+  const max = parseInt(ta.getAttribute('maxlength') || '400');
   const s = ta.selectionStart, e = ta.selectionEnd;
   const selected = ta.value.substring(s, e);
   const replacement = before + (selected || 'текст') + after;
-  ta.value = ta.value.substring(0, s) + replacement + ta.value.substring(e);
-  const newPos = selected ? s + replacement.length : s + before.length + 4;
-  ta.selectionStart = selected ? s + before.length : s + before.length;
-  ta.selectionEnd = selected ? e + before.length + after.length : s + before.length + 4;
+  const newVal = ta.value.substring(0, s) + replacement + ta.value.substring(e);
+  // Обрезаем если превышает лимит
+  ta.value = newVal.length > max ? newVal.substring(0, max) : newVal;
+  // Восстанавливаем позицию курсора
+  const cursorStart = selected ? s + before.length : s + before.length;
+  const cursorEnd   = selected ? Math.min(e + before.length + after.length, max) : Math.min(s + before.length + (selected || 'текст').length, max);
+  ta.selectionStart = Math.min(cursorStart, max);
+  ta.selectionEnd   = Math.min(cursorEnd, max);
   ta.focus();
   // Обновить счётчик
   const counterMap = {'exec-desc':'ec','job-exp':'jc','team-desc':'tc','g-content':'gc'};
@@ -585,11 +581,12 @@ function dropFile(e, inputId, imgOnly) {
 
 function valContact(inp) {
   const v = inp.value;
-  const cl = document.getElementById(inp.id.replace('-contact','-cl') + '') || 
-             document.getElementById(inp.id === 'exec-contact' ? 'exec-cl' : inp.id === 'job-contact' ? 'job-cl' : 'team-cl');
-  if (cl) cl.textContent = v.length;
-  // Разрешаем @username или https://
-  const ok = /^@[a-zA-Z0-9_]{0,14}$/.test(v) || /^https?:\/\/.+/.test(v) || v === '';
+  // Обновляем счётчик
+  const clMap = {'exec-contact':'exec-cl','job-contact':'job-cl','team-contact':'team-cl'};
+  const clId = clMap[inp.id];
+  if (clId) { const cl = document.getElementById(clId); if(cl) cl.textContent = v.length; }
+  // @username (до 29 символов после @) или https://...
+  const ok = /^@[a-zA-Z0-9_]{0,29}$/.test(v) || /^https?:\/\/.+/.test(v) || v === '';
   inp.classList.toggle('invalid', !ok && v.length > 0);
 }
 
@@ -603,7 +600,6 @@ function valUrl(inp) {
 }
 
 function limitNum(inp, maxLen) {
-  // Только целые положительные числа, максимум maxLen символов
   let v = inp.value.replace(/[^0-9]/g, '');
   if (v.length > maxLen) v = v.substring(0, maxLen);
   if (v.startsWith('0') && v.length > 1) v = v.replace(/^0+/, '') || '0';
@@ -669,7 +665,7 @@ function bp() {
   if(cur==='find-exec'){const sp=S.execSpecs,desc=vv('exec-desc'),price=vv('exec-price'),curr=vv('exec-curr'),con=vv('exec-contact');if(!sp.length&&!desc){document.getElementById('exec-preview').classList.remove('show');return;}let t='ИЩЕМ ИСПОЛНИТЕЛЯ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(desc)t+='\n\n'+desc;if(price)t+='\n\nОплата: '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('exec-cn')||'Crypto'):curr));if(con)t+='\nКонтакт: '+con;setp('exec',t,['#ищу_исполнителя','#фриланс_roblox',...sp.map(tag)]);sb('exec');}
   else if(cur==='find-job'){const sp=S.jobSpecs,exp=vv('job-exp'),price=vv('job-price'),curr=vv('job-curr'),port=vv('job-port'),con=vv('job-contact');if(!sp.length&&!exp){document.getElementById('job-preview').classList.remove('show');return;}let t='ИЩУ РАБОТУ / ЗАКАЗЫ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(exp)t+='\n\n'+exp;if(price)t+='\n\nСтавка: от '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('job-cn')||'Crypto'):curr));if(port)t+='\nПортфолио: '+port;if(con)t+='\nКонтакт: '+con;setp('job',t,['#ищу_работу','#фриланс_roblox',...sp.map(tag)]);sb('job');}
   else if(cur==='find-team'){const roles=S.teamRole,need=S.teamNeed,desc=vv('team-desc'),pay=vv('team-pay'),con=vv('team-contact');if(!roles.length&&!desc){document.getElementById('team-preview').classList.remove('show');return;}let t='ИЩЕМ КОМАНДУ\n';if(roles.length)t+='\nЯ: '+roles.join(', ');if(need.length)t+='\nИщем: '+need.join(', ');if(desc)t+='\n\n'+desc;if(pay)t+='\n\nУсловия: '+pay;if(con)t+='\nКонтакт: '+con;setp('team',t,['#ищу_команду','#roblox_team',...need.map(tag)]);sb('team');}
-  else if(cur==='guides'){const title=vv('g-title'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level');if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}let t='ГАЙД\n';if(title)t+='\n'+title;if(cat)t+='\nКатегория: '+cat;if(level)t+='\nУровень: '+level;if(content)t+='\n\n'+content.substring(0,300)+(content.length>300?'...':'');setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));sb('guide');}
+  else if(cur==='guides'){const title=vv('g-title'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level');if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}let t='ГАЙД\n';if(title)t+='\n'+title;if(cat)t+='\nКатегория: '+cat;if(level)t+='\nУровень: '+level;if(content)t+='\n\n'+content.substring(0,400)+(content.length>400?'...':'');setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));sb('guide');}
 }
 
 function validate(type) {
@@ -677,13 +673,13 @@ function validate(type) {
     if(!S.execSpecs.length&&!vv('exec-desc')) return 'Выберите специализации или опишите задачу';
     if(!vv('exec-contact')) return 'Укажите контакт';
     const con = vv('exec-contact');
-    if(!/^@[a-zA-Z0-9_]{1,14}$/.test(con) && !/^https?:\/\/.+/.test(con)) return 'Контакт: @username или https://…';
+    if(!/^@[a-zA-Z0-9_]{1,29}$/.test(con) && !/^https?:\/\/.+/.test(con)) return 'Контакт: @username или https://…';
   }
   if(type==='find-job'){
     if(!S.jobSpecs.length&&!vv('job-exp')) return 'Выберите специализации или расскажите о себе';
     if(!vv('job-contact')) return 'Укажите контакт';
     const con = vv('job-contact');
-    if(!/^@[a-zA-Z0-9_]{1,14}$/.test(con) && !/^https?:\/\/.+/.test(con)) return 'Контакт: @username или https://…';
+    if(!/^@[a-zA-Z0-9_]{1,29}$/.test(con) && !/^https?:\/\/.+/.test(con)) return 'Контакт: @username или https://…';
     const port = vv('job-port');
     if(port && !/^https?:\/\/.+/.test(port)) return 'Портфолио: только ссылка https://…';
   }
@@ -691,7 +687,7 @@ function validate(type) {
     if(!vv('team-desc')) return 'Опишите проект';
     if(!vv('team-contact')) return 'Укажите контакт';
     const con = vv('team-contact');
-    if(!/^@[a-zA-Z0-9_]{1,14}$/.test(con) && !/^https?:\/\/.+/.test(con)) return 'Контакт: @username или https://…';
+    if(!/^@[a-zA-Z0-9_]{1,29}$/.test(con) && !/^https?:\/\/.+/.test(con)) return 'Контакт: @username или https://…';
   }
   if(type==='guides'){
     if(!vv('g-title')) return 'Введите заголовок';
@@ -732,7 +728,6 @@ function send(type) {
   const boost = getBoost(type);
   if(boost === 'bump' && !confirm('Добавить буст за 25 ⭐? Счёт придёт в бот после модерации.')) return;
 
-  // Собираем файлы
   const imgMap = {'find-exec':'exec-img-inp','find-job':'job-img-inp','find-team':'team-img-inp','guides':'guide-file-inp'};
   const fid = imgMap[type];
   const attachedFiles = FILES[fid] || [];
@@ -740,7 +735,6 @@ function send(type) {
   const payload = buildP(type);
 
   if (attachedFiles.length > 0) {
-    // Отправляем через FormData
     const fd = new FormData();
     fd.append('data', JSON.stringify(payload));
     attachedFiles.forEach((f, i) => fd.append(`file_${i}`, f.file, f.name));
@@ -788,7 +782,6 @@ function showSuc(type) {
 }
 function closeSuc() { document.getElementById('suc').classList.remove('show'); }
 
-
 const TYPE_LABELS = {
   'find-exec': '🔍 Исполнитель',
   'find-job':  '💼 Работа',
@@ -827,7 +820,6 @@ function renderPost(p) {
   const tl = TYPE_LABELS[p.type] || p.type;
   const date = new Date(p.created_at).toLocaleDateString('ru', {day:'2-digit',month:'2-digit',year:'numeric'});
 
-  // Краткое описание поста
   let desc = payload.description || payload.experience || payload.content || payload.title || '—';
   if (desc.length > 120) desc = desc.substring(0, 120) + '…';
 
@@ -884,4 +876,5 @@ class P{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*can
 const pts=[];for(let i=0;i<60;i++)pts.push(new P());
 function anim(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{p.update();p.draw();});pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.strokeStyle=`rgba(255,255,255,${.08*(1-d/100)})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}));requestAnimationFrame(anim);}
 anim();
-</script>
+</script></body>
+</html>
