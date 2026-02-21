@@ -152,6 +152,25 @@ input[type=file] { display: none; }
 .toast.ok  { border-color: rgba(80,255,160,0.2); color: #80ffb0; }
 @keyframes toast-in { from { opacity:0; transform:translateY(-10px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
 @keyframes toast-out { from { opacity:1; } to { opacity:0; transform:translateY(-6px); } }
+
+/* ── Мои посты ── */
+.my-post-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--r); padding: 16px; margin-bottom: 12px; transition: border-color .16s; }
+.my-post-card:active { border-color: var(--glass-border-h); }
+.mpc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.mpc-type { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .18em; color: var(--text-dim); }
+.mpc-status { font-size: 9px; font-weight: 700; letter-spacing: .1em; padding: 3px 10px; border-radius: 20px; }
+.mpc-status.pending  { background: rgba(255,200,50,0.1);  color: #ffc832; border: 1px solid rgba(255,200,50,0.2); }
+.mpc-status.accepted { background: rgba(80,255,160,0.08); color: #50ffa0; border: 1px solid rgba(80,255,160,0.2); }
+.mpc-status.rejected { background: rgba(255,80,80,0.08);  color: #ff5050; border: 1px solid rgba(255,80,80,0.2); }
+.mpc-desc { font-size: 12px; color: var(--text-mid); line-height: 1.55; margin-bottom: 10px; white-space: pre-wrap; word-break: break-word; }
+.mpc-date { font-size: 10px; color: var(--text-dim); font-family: monospace; }
+.mpc-boost { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--glass-border); display: flex; gap: 8px; }
+.mpc-boost-btn { flex: 1; padding: 10px 8px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); color: var(--text-mid); font-size: 11px; font-weight: 600; cursor: pointer; text-align: center; transition: all .15s; }
+.mpc-boost-btn:active { background: rgba(255,255,255,0.09); color: #fff; transform: scale(.97); }
+.mpc-boost-btn.active-boost { border-color: rgba(255,200,50,0.3); color: #ffc832; background: rgba(255,200,50,0.06); }
+.posts-empty { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 13px; }
+.posts-empty .pe-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.4; }
+.posts-loading { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -161,9 +180,9 @@ input[type=file] { display: none; }
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 <div class="sidebar" id="sidebar">
   <div class="sb-brand">Roblox Studio</div>
-  <div class="sb-item" onclick="goNav('support'); toggleMenu()">Поддержка</div>
-  <div class="sb-item" onclick="toggleMenu()">Мои посты</div>
-  <div class="sb-item" onclick="typeof tg!='undefined'&&tg.close?tg.close():null">Закрыть</div>
+  <div class="sb-item" onclick="goNav('my-posts'); toggleMenu()">📋 Мои посты</div>
+  <div class="sb-item" onclick="goNav('support'); toggleMenu()">🎧 Поддержка</div>
+  <div class="sb-item" onclick="typeof tg!='undefined'&&tg.close?tg.close():null">❌ Закрыть</div>
   <div class="sb-ver">v4.0 · Stable</div>
 </div>
 
@@ -178,6 +197,7 @@ input[type=file] { display: none; }
     <div class="nav-item" onclick="goNav('find-job',this)">Работа</div>
     <div class="nav-item" onclick="goNav('find-team',this)">Команда</div>
     <div class="nav-item" onclick="goNav('guides',this)">Гайды</div>
+    <div class="nav-item" onclick="goNav('my-posts',this)">Мои посты</div>
   </div>
   <div class="scroll-area">
     <div class="content">
@@ -409,6 +429,12 @@ input[type=file] { display: none; }
       </div>
 
       <!-- ══ ПОДДЕРЖКА ══ -->
+
+      <div id="page-my-posts" class="page">
+        <div class="pg-head"><div class="pg-eyebrow">Личный кабинет</div><div class="pg-title">Мои<br>посты</div><div class="pg-sub">Ваши объявления и гайды</div></div>
+        <div id="my-posts-list"><div class="posts-loading">Загрузка…</div></div>
+      </div>
+
       <div id="page-support" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Служебный раздел</div><div class="pg-title">Поддержка</div></div>
         <div class="note">Ответим в чате бота. Повторный запрос — не раньше чем через 2 часа.</div>
@@ -589,6 +615,7 @@ function goNav(id, el) {
   if(el) el.classList.add('active');
   document.querySelector('.scroll-area').scrollTop = 0;
   cur = id; bp();
+  if(id==='my-posts') loadMyPosts();
 }
 function toggleMenu() {
   const s=document.getElementById('sidebar'), o=document.getElementById('overlay');
@@ -744,6 +771,101 @@ function showSuc(type) {
   document.getElementById('suc').classList.add('show');
 }
 function closeSuc() { document.getElementById('suc').classList.remove('show'); }
+
+
+// ── Мои посты ─────────────────────────────────────────────────
+const TYPE_LABELS = {
+  'find-exec': '🔍 Исполнитель',
+  'find-job':  '💼 Работа',
+  'find-team': '🤝 Команда',
+  'guides':    '📘 Гайд'
+};
+const STATUS_LABELS = {
+  'pending':  {text:'На модерации', cls:'pending'},
+  'accepted': {text:'Опубликован',  cls:'accepted'},
+  'rejected': {text:'Отклонён',    cls:'rejected'}
+};
+
+async function loadMyPosts() {
+  const uid = tg.initDataUnsafe?.user?.id || 0;
+  const list = document.getElementById('my-posts-list');
+  list.innerHTML = '<div class="posts-loading">Загрузка…</div>';
+  try {
+    const res = await fetch(API_URL + '?action=my_posts&user_id=' + uid);
+    const data = await res.json();
+    if (!data.posts || data.posts.length === 0) {
+      list.innerHTML = '<div class="posts-empty"><div class="pe-icon">📭</div>У вас пока нет постов</div>';
+      return;
+    }
+    list.innerHTML = '';
+    data.posts.forEach(p => list.appendChild(renderPost(p)));
+  } catch(e) {
+    list.innerHTML = '<div class="posts-empty"><div class="pe-icon">⚠️</div>Ошибка загрузки</div>';
+  }
+}
+
+function renderPost(p) {
+  const card = document.createElement('div');
+  card.className = 'my-post-card';
+  const payload = p.payload || {};
+  const sl = STATUS_LABELS[p.status] || {text: p.status, cls: 'pending'};
+  const tl = TYPE_LABELS[p.type] || p.type;
+  const date = new Date(p.created_at).toLocaleDateString('ru', {day:'2-digit',month:'2-digit',year:'numeric'});
+
+  // Краткое описание поста
+  let desc = payload.description || payload.experience || payload.content || payload.title || '—';
+  if (desc.length > 120) desc = desc.substring(0, 120) + '…';
+
+  const isAccepted = p.status === 'accepted';
+  const hasBoosted = p.boosted_until && new Date(p.boosted_until) > new Date();
+  const boostLabel = hasBoosted ? '⭐ Буст активен' : '🚀 Поднять в топ · 25★';
+
+  card.innerHTML = `
+    <div class="mpc-top">
+      <span class="mpc-type">${tl}</span>
+      <span class="mpc-status ${sl.cls}">${sl.text}</span>
+    </div>
+    <div class="mpc-desc">${desc}</div>
+    <div class="mpc-date">📅 ${date}</div>
+    ${isAccepted ? `<div class="mpc-boost">
+      <div class="mpc-boost-btn ${hasBoosted ? 'active-boost' : ''}" onclick="boostPost(${p.id}, this)">${boostLabel}</div>
+    </div>` : ''}
+  `;
+  return card;
+}
+
+async function boostPost(postId, btn) {
+  if (btn.classList.contains('active-boost')) {
+    toast('Буст уже активен для этого поста', 'ok');
+    return;
+  }
+  if (!confirm('Поднять пост в топ за 25 ⭐?')) return;
+  const uid = tg.initDataUnsafe?.user?.id || 0;
+  btn.textContent = '…';
+  btn.style.opacity = '0.5';
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({type: 'boost_post', post_id: postId, user_id: uid, boost: 'bump'})
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      btn.textContent = '⭐ Буст активен';
+      btn.classList.add('active-boost');
+      btn.style.opacity = '1';
+      toast('Буст активирован на 24 часа!', 'ok');
+    } else {
+      btn.textContent = '🚀 Поднять в топ · 25★';
+      btn.style.opacity = '1';
+      toast(data.message || 'Ошибка', 'err');
+    }
+  } catch(e) {
+    btn.textContent = '🚀 Поднять в топ · 25★';
+    btn.style.opacity = '1';
+    toast('Ошибка: ' + e.message);
+  }
+}
 
 // ── Частицы ───────────────────────────────────────────────────
 const canvas=document.getElementById('pc');const ctx=canvas.getContext('2d');
