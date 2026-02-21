@@ -216,7 +216,7 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('exec-desc','||','||')" title="Спойлер">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
-          <textarea id="exec-desc" rows="5" maxlength="400" placeholder="Что нужно сделать, сроки, детали…" oninput="c(this,'ec');bp()"></textarea>
+          <textarea id="exec-desc" rows="5" maxlength="800" placeholder="Что нужно сделать, сроки, детали…" oninput="onTA(this,'ec');bp()"></textarea>
           <div class="char-hint"><span id="ec">0</span> / 400</div>
         </div>
 
@@ -275,7 +275,7 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('job-exp','||','||')">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
-          <textarea id="job-exp" rows="5" maxlength="400" placeholder="Опыт, проекты, навыки…" oninput="c(this,'jc');bp()"></textarea>
+          <textarea id="job-exp" rows="5" maxlength="800" placeholder="Опыт, проекты, навыки…" oninput="onTA(this,'jc');bp()"></textarea>
           <div class="char-hint"><span id="jc">0</span> / 400</div>
         </div>
 
@@ -341,7 +341,7 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('team-desc','||','||')">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
-          <textarea id="team-desc" rows="6" maxlength="400" placeholder="Идея, механика, цели…" oninput="c(this,'tc');bp()"></textarea>
+          <textarea id="team-desc" rows="6" maxlength="800" placeholder="Идея, механика, цели…" oninput="onTA(this,'tc');bp()"></textarea>
           <div class="char-hint"><span id="tc">0</span> / 400</div>
         </div>
 
@@ -405,7 +405,7 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('g-content','||','||')">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ```блок``` ||спойлер||</div>
-          <textarea id="g-content" rows="11" maxlength="400" placeholder="Шаги, объяснения, примеры…" oninput="c(this,'gc');bp()"></textarea>
+          <textarea id="g-content" rows="11" maxlength="800" placeholder="Шаги, объяснения, примеры…" oninput="onTA(this,'gc');bp()"></textarea>
           <div class="char-hint"><span id="gc">0</span> / 400</div>
         </div>
 
@@ -505,27 +505,55 @@ const S = { execSpecs:[], jobSpecs:[], teamRole:[], teamNeed:[], guideCat:null, 
 const FILES = {};
 let cur = 'find-exec';
 
-// ── fmt(): вставляет форматирование и соблюдает maxlength ──
+// ── Виртуальная длина: каждый перенос строки считается за 10 символов ──
+function virtualLen(text) {
+  const newlines = (text.match(/\n/g) || []).length;
+  return text.length + newlines * 9; // +9 т.к. сам \n уже посчитан как 1
+}
+
+// Ограничить textarea по виртуальной длине (maxlength на теге — физический буфер)
+function enforceVirtualMax(ta, max) {
+  // Обрезаем посимвольно с конца пока не уложимся
+  while (virtualLen(ta.value) > max) {
+    ta.value = ta.value.slice(0, -1);
+  }
+}
+
+// Обработчик oninput для textarea с виртуальным лимитом
+function onTA(ta, counterId) {
+  const max = 400; // виртуальный лимит
+  enforceVirtualMax(ta, max);
+  const el = document.getElementById(counterId);
+  if (el) el.textContent = virtualLen(ta.value);
+}
+
+// Простой счётчик для обычных инпутов (без виртуального лимита)
+function c(el, id) {
+  const x = document.getElementById(id);
+  if (x) x.textContent = el.value.length;
+}
+
+// ── fmt(): вставляет форматирование и соблюдает виртуальный maxlength ──
 function fmt(textareaId, before, after) {
   const ta = document.getElementById(textareaId);
   if (!ta) return;
-  const max = parseInt(ta.getAttribute('maxlength') || '400');
+  const max = 400; // виртуальный лимит
   const s = ta.selectionStart, e = ta.selectionEnd;
   const selected = ta.value.substring(s, e);
   const replacement = before + (selected || 'текст') + after;
   const newVal = ta.value.substring(0, s) + replacement + ta.value.substring(e);
-  // Обрезаем если превышает лимит
-  ta.value = newVal.length > max ? newVal.substring(0, max) : newVal;
+  ta.value = newVal;
+  enforceVirtualMax(ta, max);
   // Восстанавливаем позицию курсора
-  const cursorStart = selected ? s + before.length : s + before.length;
-  const cursorEnd   = selected ? Math.min(e + before.length + after.length, max) : Math.min(s + before.length + (selected || 'текст').length, max);
-  ta.selectionStart = Math.min(cursorStart, max);
-  ta.selectionEnd   = Math.min(cursorEnd, max);
+  const cursorStart = s + before.length;
+  const cursorEnd   = selected ? s + before.length + selected.length : s + before.length + 'текст'.length;
+  ta.selectionStart = Math.min(cursorStart, ta.value.length);
+  ta.selectionEnd   = Math.min(cursorEnd, ta.value.length);
   ta.focus();
   // Обновить счётчик
   const counterMap = {'exec-desc':'ec','job-exp':'jc','team-desc':'tc','g-content':'gc'};
   const cid = counterMap[textareaId];
-  if (cid) { const cel = document.getElementById(cid); if(cel) cel.textContent = ta.value.length; }
+  if (cid) { const cel = document.getElementById(cid); if(cel) cel.textContent = virtualLen(ta.value); }
   bp();
 }
 
@@ -581,11 +609,9 @@ function dropFile(e, inputId, imgOnly) {
 
 function valContact(inp) {
   const v = inp.value;
-  // Обновляем счётчик
   const clMap = {'exec-contact':'exec-cl','job-contact':'job-cl','team-contact':'team-cl'};
   const clId = clMap[inp.id];
   if (clId) { const cl = document.getElementById(clId); if(cl) cl.textContent = v.length; }
-  // @username (до 29 символов после @) или https://...
   const ok = /^@[a-zA-Z0-9_]{0,29}$/.test(v) || /^https?:\/\/.+/.test(v) || v === '';
   inp.classList.toggle('invalid', !ok && v.length > 0);
 }
@@ -649,7 +675,6 @@ function ct(p) {
   if(cu&&w) w.style.display=cu.value==='Crypto'?'block':'none';
   if(cu&&rv) rv.style.display=cu.value==='%revenue'?'block':'none';
 }
-function c(el, id) { const x=document.getElementById(id); if(x) x.textContent=el.value.length; }
 function vv(id) { const el=document.getElementById(id); return el?el.value.trim():''; }
 function tag(s) { return '#'+s.toLowerCase().replace(/[^a-zа-яёЁ0-9]/gi,''); }
 function setp(id, body, tags) {
