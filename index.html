@@ -184,7 +184,7 @@ input[type=file] { display: none; }
   <div class="sb-item" onclick="goNav('my-posts'); toggleMenu()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/><line x1="9" y1="9" x2="11" y2="9"/></svg> Мои посты</div>
   <div class="sb-item" onclick="goNav('support'); toggleMenu()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Поддержка</div>
   <div class="sb-item" onclick="typeof tg!='undefined'&&tg.close?tg.close():null"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Закрыть</div>
-  <div class="sb-ver">v4.0 · Stable</div>
+  <div class="sb-ver">v4.1 · Stable</div>
 </div>
 
 <div id="app">
@@ -215,7 +215,7 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('exec-desc','||','||')" title="Спойлер">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
-          <textarea id="exec-desc" rows="5" maxlength="800" placeholder="Что нужно сделать, сроки, детали…" oninput="onTA(this,'ec');bp()"></textarea>
+          <textarea id="exec-desc" rows="5" maxlength="800" placeholder="Что нужно сделать, сроки, детали…" oninput="onTA(this,'ec',400);bp()"></textarea>
           <div class="char-hint"><span id="ec">0</span> / 400</div>
         </div>
         <div class="field">
@@ -269,7 +269,7 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('job-exp','||','||')">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
-          <textarea id="job-exp" rows="5" maxlength="800" placeholder="Опыт, проекты, навыки…" oninput="onTA(this,'jc');bp()"></textarea>
+          <textarea id="job-exp" rows="5" maxlength="800" placeholder="Опыт, проекты, навыки…" oninput="onTA(this,'jc',400);bp()"></textarea>
           <div class="char-hint"><span id="jc">0</span> / 400</div>
         </div>
         <div class="field">
@@ -329,7 +329,7 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('team-desc','||','||')">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ||спойлер||</div>
-          <textarea id="team-desc" rows="6" maxlength="800" placeholder="Идея, механика, цели…" oninput="onTA(this,'tc');bp()"></textarea>
+          <textarea id="team-desc" rows="6" maxlength="800" placeholder="Идея, механика, цели…" oninput="onTA(this,'tc',400);bp()"></textarea>
           <div class="char-hint"><span id="tc">0</span> / 400</div>
         </div>
         <div class="field"><span class="f-label">Условия</span><div class="sel-w"><select id="team-pay" onchange="bp()">
@@ -366,7 +366,7 @@ input[type=file] { display: none; }
         <button class="btn" onclick="send('find-team')">Отправить на модерацию</button>
       </div>
 
-      <!-- ══ ГАЙДЫ ══ (без буста) -->
+      <!-- ══ ГАЙДЫ ══ -->
       <div id="page-guides" class="page">
         <div class="pg-head"><div class="pg-eyebrow">Раздел — База знаний</div><div class="pg-title">Написать<br>гайд</div><div class="pg-sub">После проверки появится в канале</div></div>
         <div class="field">
@@ -374,6 +374,15 @@ input[type=file] { display: none; }
           <input type="text" id="g-title" maxlength="80" placeholder="Как создать…" oninput="c(this,'gt');bp()">
           <div class="char-hint"><span id="gt">0</span> / 80</div>
         </div>
+
+        <!-- ★ НОВОЕ: Поле "Автор" -->
+        <div class="field">
+          <span class="f-label">Автор</span>
+          <input type="text" id="g-author" maxlength="50" placeholder="@username или https://…" oninput="valAuthor(this);bp()">
+          <div id="g-author-err" style="font-size:10px;color:#ff8080;margin-top:4px;display:none">Только @username или ссылка https://…</div>
+          <div class="char-hint"><span id="ga">0</span> / 50</div>
+        </div>
+
         <div class="field"><span class="f-label">Категория</span><div class="cat-chips" id="guide-cats"></div></div>
         <div class="field"><span class="f-label">Уровень</span><div class="sel-w"><select id="g-level"><option>Новичок</option><option>Средний</option><option>Продвинутый</option></select></div></div>
         <div class="field">
@@ -386,8 +395,9 @@ input[type=file] { display: none; }
             <div class="fmt-btn" onclick="fmt('g-content','||','||')">👁</div>
           </div>
           <div class="fmt-hint">**жирный** _курсив_ `код` ```блок``` ||спойлер||</div>
-          <textarea id="g-content" rows="11" maxlength="800" placeholder="Шаги, объяснения, примеры…" oninput="onTA(this,'gc');bp()"></textarea>
-          <div class="char-hint"><span id="gc">0</span> / 400</div>
+          <!-- ★ ИЗМЕНЕНО: maxlength=4500 (запас), лимит 1500 виртуальных символов -->
+          <textarea id="g-content" rows="14" maxlength="4500" placeholder="Шаги, объяснения, примеры…" oninput="onTA(this,'gc',1500);bp()"></textarea>
+          <div class="char-hint"><span id="gc">0</span> / 1500</div>
         </div>
         <div class="field">
           <span class="f-label">Прикрепить файлы к гайду</span>
@@ -401,7 +411,6 @@ input[type=file] { display: none; }
           <div class="file-list" id="guide-file-list"></div>
         </div>
         <div class="preview" id="guide-preview"><div class="preview-lbl">Превью гайда</div><div class="preview-body" id="guide-pb"></div><div class="preview-tags" id="guide-pt"></div></div>
-        <!-- Буст для гайдов отключён -->
         <button class="btn" onclick="send('guides')">Отправить на модерацию</button>
       </div>
 
@@ -467,7 +476,6 @@ function toggleBoost(sec) {
 function getBoost(type) {
   const secMap = {'find-exec':'exec','find-job':'job','find-team':'team'};
   const sec = secMap[type];
-  // Гайды — буст недоступен
   if (!sec) return 'none';
   return BOOST_STATE[sec] ? 'bump' : 'none';
 }
@@ -486,14 +494,16 @@ function virtualLen(text) {
   return text.length + newlines * 9;
 }
 
+// ★ ИЗМЕНЕНО: принимает max как параметр (по умолчанию 400)
 function enforceVirtualMax(ta, max) {
   while (virtualLen(ta.value) > max) {
     ta.value = ta.value.slice(0, -1);
   }
 }
 
-function onTA(ta, counterId) {
-  const max = 400;
+// ★ ИЗМЕНЕНО: onTA теперь принимает max и передаёт его в enforceVirtualMax
+function onTA(ta, counterId, max) {
+  max = max || 400;
   enforceVirtualMax(ta, max);
   const el = document.getElementById(counterId);
   if (el) el.textContent = virtualLen(ta.value);
@@ -507,7 +517,9 @@ function c(el, id) {
 function fmt(textareaId, before, after) {
   const ta = document.getElementById(textareaId);
   if (!ta) return;
-  const max = 400;
+  // ★ Определяем лимит по id textarea
+  const maxMap = {'g-content': 1500};
+  const max = maxMap[textareaId] || 400;
   const s = ta.selectionStart, e = ta.selectionEnd;
   const selected = ta.value.substring(s, e);
   const replacement = before + (selected || 'текст') + after;
@@ -573,6 +585,16 @@ function dropFile(e, inputId, imgOnly) {
   const listId = inputId.replace('-inp', '-list');
   const fakeInput = { id: inputId, files: dt.files, value: '' };
   handleFiles(fakeInput, listId, imgOnly);
+}
+
+function valAuthor(inp) {
+  const v = inp.value.trim();
+  const err = document.getElementById('g-author-err');
+  const ga = document.getElementById('ga');
+  if (ga) ga.textContent = inp.value.length;
+  const ok = v === '' || /^@[a-zA-Z0-9_]{1,49}$/.test(v) || /^https?:\/\/.+/.test(v);
+  if (err) err.style.display = ok ? 'none' : 'block';
+  inp.classList.toggle('invalid', !ok && v.length > 0);
 }
 
 function valContact(inp) {
@@ -656,7 +678,18 @@ function bp() {
   if(cur==='find-exec'){const sp=S.execSpecs,desc=vv('exec-desc'),price=vv('exec-price'),curr=vv('exec-curr'),con=vv('exec-contact');if(!sp.length&&!desc){document.getElementById('exec-preview').classList.remove('show');return;}let t='ИЩЕМ ИСПОЛНИТЕЛЯ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(desc)t+='\n\n'+desc;if(price)t+='\n\nОплата: '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('exec-cn')||'Crypto'):curr));if(con)t+='\nКонтакт: '+con;setp('exec',t,['#ищу_исполнителя','#фриланс_roblox',...sp.map(tag)]);}
   else if(cur==='find-job'){const sp=S.jobSpecs,exp=vv('job-exp'),price=vv('job-price'),curr=vv('job-curr'),port=vv('job-port'),con=vv('job-contact');if(!sp.length&&!exp){document.getElementById('job-preview').classList.remove('show');return;}let t='ИЩУ РАБОТУ / ЗАКАЗЫ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(exp)t+='\n\n'+exp;if(price)t+='\n\nСтавка: от '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('job-cn')||'Crypto'):curr));if(port)t+='\nПортфолио: '+port;if(con)t+='\nКонтакт: '+con;setp('job',t,['#ищу_работу','#фриланс_roblox',...sp.map(tag)]);}
   else if(cur==='find-team'){const roles=S.teamRole,need=S.teamNeed,desc=vv('team-desc'),pay=vv('team-pay'),con=vv('team-contact');if(!roles.length&&!desc){document.getElementById('team-preview').classList.remove('show');return;}let t='ИЩЕМ КОМАНДУ\n';if(roles.length)t+='\nЯ: '+roles.join(', ');if(need.length)t+='\nИщем: '+need.join(', ');if(desc)t+='\n\n'+desc;if(pay)t+='\n\nУсловия: '+pay;if(con)t+='\nКонтакт: '+con;setp('team',t,['#ищу_команду','#roblox_team',...need.map(tag)]);}
-  else if(cur==='guides'){const title=vv('g-title'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level');if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}let t='ГАЙД\n';if(title)t+='\n'+title;if(cat)t+='\nКатегория: '+cat;if(level)t+='\nУровень: '+level;if(content)t+='\n\n'+content.substring(0,400)+(content.length>400?'...':'');setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));}
+  else if(cur==='guides'){
+    // ★ ИЗМЕНЕНО: добавлен автор в превью
+    const title=vv('g-title'),author=vv('g-author'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level');
+    if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}
+    let t='ГАЙД\n';
+    if(title)t+='\n'+title;
+    if(author)t+='\nАвтор: '+author;
+    if(cat)t+='\nКатегория: '+cat;
+    if(level)t+='\nУровень: '+level;
+    if(content)t+='\n\n'+content.substring(0,300)+(content.length>300?'…':'');
+    setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));
+  }
 }
 
 function validate(type) {
@@ -684,6 +717,8 @@ function validate(type) {
     if(!vv('g-title')) return 'Введите заголовок';
     if(!S.guideCat) return 'Выберите категорию';
     if(!vv('g-content')) return 'Напишите текст гайда';
+    const author = vv('g-author');
+    if(author && !/^@[a-zA-Z0-9_]{1,49}$/.test(author) && !/^https?:\/\/.+/.test(author)) return 'Автор: только @username или https://…';
   }
   return null;
 }
@@ -708,7 +743,12 @@ function buildP(type) {
     p.description=vv('team-desc');p.payment=vv('team-pay');p.contact=vv('team-contact');
     p.hashtags=['#ищу_команду','#roblox_team',...S.teamNeed.map(tag)];
   } else if(type==='guides'){
-    p.title=vv('g-title');p.category=S.guideCat;p.level=vv('g-level');p.content=vv('g-content');
+    // ★ ИЗМЕНЕНО: добавлено поле author
+    p.title=vv('g-title');
+    p.author=vv('g-author');
+    p.category=S.guideCat;
+    p.level=vv('g-level');
+    p.content=vv('g-content');
     p.hashtags=['#гайд_roblox',...(S.guideCat?[tag(S.guideCat)]:[])].filter(Boolean);
   }
   return p;
