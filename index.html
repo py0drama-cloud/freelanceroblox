@@ -400,6 +400,11 @@ input[type=file] { display: none; }
           <div class="char-hint"><span id="gc">0</span> / 1500</div>
         </div>
         <div class="field">
+          <span class="f-label">Дополнительные теги</span>
+          <input type="text" id="g-tags" maxlength="100" placeholder="lua obby скриптинг…" oninput="c(this,'gtags');bp()">
+          <div class="char-hint"><span id="gtags">0</span> / 100 · знак # не обязателен</div>
+        </div>
+        <div class="field">
           <span class="f-label">Прикрепить файлы к гайду</span>
           <div class="upload-zone" onclick="triggerUpload('guide-file-inp')" id="guide-file-zone"
             ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,'guide-file-inp',false)">
@@ -679,8 +684,7 @@ function bp() {
   else if(cur==='find-job'){const sp=S.jobSpecs,exp=vv('job-exp'),price=vv('job-price'),curr=vv('job-curr'),port=vv('job-port'),con=vv('job-contact');if(!sp.length&&!exp){document.getElementById('job-preview').classList.remove('show');return;}let t='ИЩУ РАБОТУ / ЗАКАЗЫ\n';if(sp.length)t+='\nСпециализации: '+sp.join(', ');if(exp)t+='\n\n'+exp;if(price)t+='\n\nСтавка: от '+price+(curr==='%revenue'?' % от прибыли':' '+(curr==='Crypto'?(vv('job-cn')||'Crypto'):curr));if(port)t+='\nПортфолио: '+port;if(con)t+='\nКонтакт: '+con;setp('job',t,['#ищу_работу','#фриланс_roblox',...sp.map(tag)]);}
   else if(cur==='find-team'){const roles=S.teamRole,need=S.teamNeed,desc=vv('team-desc'),pay=vv('team-pay'),con=vv('team-contact');if(!roles.length&&!desc){document.getElementById('team-preview').classList.remove('show');return;}let t='ИЩЕМ КОМАНДУ\n';if(roles.length)t+='\nЯ: '+roles.join(', ');if(need.length)t+='\nИщем: '+need.join(', ');if(desc)t+='\n\n'+desc;if(pay)t+='\n\nУсловия: '+pay;if(con)t+='\nКонтакт: '+con;setp('team',t,['#ищу_команду','#roblox_team',...need.map(tag)]);}
   else if(cur==='guides'){
-    // ★ ИЗМЕНЕНО: добавлен автор в превью
-    const title=vv('g-title'),author=vv('g-author'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level');
+    const title=vv('g-title'),author=vv('g-author'),content=vv('g-content'),cat=S.guideCat,level=vv('g-level'),extraTags=vv('g-tags');
     if(!title&&!content){document.getElementById('guide-preview').classList.remove('show');return;}
     let t='ГАЙД\n';
     if(title)t+='\n'+title;
@@ -688,7 +692,9 @@ function bp() {
     if(cat)t+='\nКатегория: '+cat;
     if(level)t+='\nУровень: '+level;
     if(content)t+='\n\n'+content.substring(0,300)+(content.length>300?'…':'');
-    setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):'')].filter(Boolean));
+    // парсим доп теги для превью
+    const parsedExtra = extraTags ? extraTags.split(/[\s,]+/).filter(Boolean).map(t=>('#'+t.replace(/^#+/,'').replace(/[^\wа-яёА-ЯЁ]/gi,'').toLowerCase())).filter(t=>t.length>1) : [];
+    setp('guide',t,['#гайд_roblox',...(cat?[tag(cat)]:[]),(level?tag(level):''),...parsedExtra].filter(Boolean));
   }
 }
 
@@ -743,13 +749,15 @@ function buildP(type) {
     p.description=vv('team-desc');p.payment=vv('team-pay');p.contact=vv('team-contact');
     p.hashtags=['#ищу_команду','#roblox_team',...S.teamNeed.map(tag)];
   } else if(type==='guides'){
-    // ★ ИЗМЕНЕНО: добавлено поле author
+    // ★ ИЗМЕНЕНО: добавлено поле author и extra_tags
     p.title=vv('g-title');
     p.author=vv('g-author');
     p.category=S.guideCat;
     p.level=vv('g-level');
     p.content=vv('g-content');
-    p.hashtags=['#гайд_roblox',...(S.guideCat?[tag(S.guideCat)]:[])].filter(Boolean);
+    p.extra_tags=vv('g-tags');
+    const parsedExtra = p.extra_tags ? p.extra_tags.split(/[\s,]+/).filter(Boolean).map(t=>('#'+t.replace(/^#+/,'').replace(/[^\wа-яёА-ЯЁ]/gi,'').toLowerCase())).filter(t=>t.length>1) : [];
+    p.hashtags=['#гайд_roblox',...(S.guideCat?[tag(S.guideCat)]:[]),...parsedExtra].filter(Boolean);
   }
   return p;
 }
